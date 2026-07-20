@@ -1,0 +1,31 @@
+{
+  "name": "medicare-hms",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MediCare HMS — Hospital Management System (Next.js 15 + NestJS + PostgreSQL + TypeORM)",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared"
+  ],
+  "scripts": {
+    "dev:backend": "npm run start:dev --workspace backend",
+    "dev:frontend": "npm run dev --workspace frontend",
+    "dev": "concurrently -n backend,frontend -c blue,magenta \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "build:backend": "npm run build --workspace backend",
+    "build:frontend": "npm run build --workspace frontend",
+    "build:shared": "npm run build --workspace shared",
+    "build": "npm run build:shared && npm run build:backend && npm run build:frontend",
+    "migration:generate": "npm run migration:generate --workspace backend",
+    "migration:run": "npm run migration:run --workspace backend",
+    "seed": "npm run seed --workspace backend",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "prettier": "^3.4.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
