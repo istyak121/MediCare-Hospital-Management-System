@@ -1,0 +1,59 @@
+{
+  "common": {
+    "app_name": "MediCare HMS",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "no_results": "No results found",
+    "back": "Back",
+    "confirm": "Confirm",
+    "language": "Language",
+    "dark_mode": "Dark Mode",
+    "logout": "Logout",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "auth": {
+    "login_title": "Sign in to MediCare HMS",
+    "email": "Email",
+    "password": "Password",
+    "login_button": "Sign In",
+    "forgot_password": "Forgot password?",
+    "invalid_credentials": "Invalid email or password",
+    "account_locked": "Account locked. Try again later.",
+    "logout_success": "Logged out successfully",
+    "login_subtitle": "Enter your credentials to access the system"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "appointments": "Appointments",
+    "admissions": "Admissions & Beds",
+    "pharmacy": "Pharmacy",
+    "laboratory": "Laboratory",
+    "billing": "Billing & Invoices",
+    "staff": "Staff Management",
+    "reports": "Reports & Analytics",
+    "settings": "Settings",
+    "audit_logs": "Audit Logs",
+    "my_appointments": "My Appointments",
+    "my_patients": "My Patients",
+    "prescriptions": "Prescriptions",
+    "my_schedule": "My Schedule"
+  },
+  "dashboard": {
+    "total_patients": "Total Patients",
+    "total_appointments": "Appointments Today",
+    "active_admissions": "Active Admissions",
+    "revenue_today": "Revenue Today",
+    "pending_lab_tests": "Pending Lab Tests",
+    "low_stock_medicines": "Low Stock Medicines",
+    "quick_actions": "Quick Actions",
+    "recent_admissions": "Recent Admissions",
+    "pending_payments": "Pending Payments"
+  }
+}

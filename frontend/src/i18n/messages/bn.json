@@ -1,0 +1,59 @@
+{
+  "common": {
+    "app_name": "মেডিকেয়ার এইচএমএস",
+    "loading": "লোড হচ্ছে...",
+    "save": "সংরক্ষণ",
+    "cancel": "বাতিল",
+    "delete": "মুছুন",
+    "edit": "সম্পাদনা",
+    "view": "দেখুন",
+    "search": "অনুসন্ধান",
+    "no_results": "কোনো ফলাফল পাওয়া যায়নি",
+    "back": "পেছনে",
+    "confirm": "নিশ্চিত করুন",
+    "language": "ভাষা",
+    "dark_mode": "ডার্ক মোড",
+    "logout": "লগআউট",
+    "profile": "প্রোফাইল",
+    "settings": "সেটিংস"
+  },
+  "auth": {
+    "login_title": "মেডিকেয়ার এইচএমএস এ সাইন ইন করুন",
+    "email": "ইমেইল",
+    "password": "পাসওয়ার্ড",
+    "login_button": "সাইন ইন",
+    "forgot_password": "পাসওয়ার্ড ভুলে গেছেন?",
+    "invalid_credentials": "ভুল ইমেইল বা পাসওয়ার্ড",
+    "account_locked": "অ্যাকাউন্ট লক করা হয়েছে। পরে আবার চেষ্টা করুন।",
+    "logout_success": "সফলভাবে লগআউট করা হয়েছে",
+    "login_subtitle": "সিস্টেমে প্রবেশ করতে আপনার ক্রেডেনশিয়াল লিখুন"
+  },
+  "nav": {
+    "dashboard": "ড্যাশবোর্ড",
+    "patients": "রোগী",
+    "appointments": "অ্যাপয়েন্টমেন্ট",
+    "admissions": "ভর্তি ও বেড",
+    "pharmacy": "ফার্মেসি",
+    "laboratory": "ল্যাবরেটরি",
+    "billing": "বিলিং ও ইনভয়েস",
+    "staff": "স্টাফ ব্যবস্থাপনা",
+    "reports": "রিপোর্ট ও বিশ্লেষণ",
+    "settings": "সেটিংস",
+    "audit_logs": "অডিট লগ",
+    "my_appointments": "আমার অ্যাপয়েন্টমেন্ট",
+    "my_patients": "আমার রোগী",
+    "prescriptions": "প্রেসক্রিপশন",
+    "my_schedule": "আমার সময়সূচী"
+  },
+  "dashboard": {
+    "total_patients": "মোট রোগী",
+    "total_appointments": "আজকের অ্যাপয়েন্টমেন্ট",
+    "active_admissions": "সক্রিয় ভর্তি",
+    "revenue_today": "আজকের আয়",
+    "pending_lab_tests": "মুলতুবি ল্যাব টেস্ট",
+    "low_stock_medicines": "স্বল্প মজুদের ওষুধ",
+    "quick_actions": "দ্রুত পদক্ষেপ",
+    "recent_admissions": "সাম্প্রতিক ভর্তি",
+    "pending_payments": "মুলতুবি পেমেন্ট"
+  }
+}
