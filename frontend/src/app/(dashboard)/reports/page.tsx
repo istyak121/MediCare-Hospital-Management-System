@@ -1,41 +1,14 @@
 'use client';
+import { BarChart3 } from 'lucide-react';
+import { PlaceholderPage } from '@/components/ui/PlaceholderPage';
 
-import { useTranslations } from 'next-intl';
-import { BarChart3, ArrowRight } from 'lucide-react';
-
-export default function ReportsAnalyticsPage() {
-  const t = useTranslations('common');
-
+export default function ReportsPage() {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center">
-            <BarChart3 className="w-6 h-6 text-primary-600" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-text-primary">Reports & Analytics</h1>
-            <p className="text-sm text-text-muted">Financial reports, patient statistics, bed occupancy, and operational analytics.</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg border border-border shadow-sm p-12">
-        <div className="flex flex-col items-center justify-center text-center">
-          <div className="w-16 h-16 rounded-full bg-bg-tertiary flex items-center justify-center mb-4">
-            <BarChart3 className="w-8 h-8 text-text-muted" />
-          </div>
-          <h3 className="text-lg font-semibold text-text-primary mb-2">Coming in Phase 2</h3>
-          <p className="text-text-muted max-w-md mb-6">
-            This module is fully specified in the design document and will be implemented in the next phase.
-            All backend entities and API endpoints are already built and ready.
-          </p>
-          <div className="flex items-center gap-2 text-sm text-primary-600 font-medium">
-            <span>View API docs</span>
-            <ArrowRight className="w-4 h-4" />
-          </div>
-        </div>
-      </div>
-    </div>
+    <PlaceholderPage
+      icon={<BarChart3 className="w-6 h-6 text-primary-600" />}
+      title="Reports & Analytics"
+      description="Hospital-wide analytics, patient statistics, and financial reports."
+      features={['Patient statistics', 'Revenue analytics', 'Bed occupancy rates', 'Top diagnoses', 'Staff performance', 'Export to PDF/Excel']}
+    />
   );
 }

@@ -1,41 +1,14 @@
 'use client';
+import { Banknote } from 'lucide-react';
+import { PlaceholderPage } from '@/components/ui/PlaceholderPage';
 
-import { useTranslations } from 'next-intl';
-import { Receipt, ArrowRight } from 'lucide-react';
-
-export default function AccountantDashboardPage() {
-  const t = useTranslations('common');
-
+export default function AccountantPage() {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center">
-            <Receipt className="w-6 h-6 text-primary-600" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-text-primary">Accountant Dashboard</h1>
-            <p className="text-sm text-text-muted">Daily collection, outstanding bills, and financial reports will appear here.</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg border border-border shadow-sm p-12">
-        <div className="flex flex-col items-center justify-center text-center">
-          <div className="w-16 h-16 rounded-full bg-bg-tertiary flex items-center justify-center mb-4">
-            <Receipt className="w-8 h-8 text-text-muted" />
-          </div>
-          <h3 className="text-lg font-semibold text-text-primary mb-2">Coming in Phase 2</h3>
-          <p className="text-text-muted max-w-md mb-6">
-            This module is fully specified in the design document and will be implemented in the next phase.
-            All backend entities and API endpoints are already built and ready.
-          </p>
-          <div className="flex items-center gap-2 text-sm text-primary-600 font-medium">
-            <span>View API docs</span>
-            <ArrowRight className="w-4 h-4" />
-          </div>
-        </div>
-      </div>
-    </div>
+    <PlaceholderPage
+      icon={<Banknote className="w-6 h-6 text-primary-600" />}
+      title="Accountant Dashboard"
+      description="Financial overview, revenue tracking, and expense management."
+      features={['Revenue & expense tracking', 'Daily collection report', 'Outstanding bills', 'Payment reconciliation', 'Financial reports', 'Insurance claims']}
+    />
   );
 }
