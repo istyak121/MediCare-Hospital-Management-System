@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { usePatients } from '@/hooks/usePatients';
-import { Search, Plus, ChevronLeft, ChevronRight, Filter, Download } from 'lucide-react';
+import { Search, Plus, ChevronLeft, ChevronRight, Filter, Download, Users } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { TableSkeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export default function PatientsPage() {
   const t = useTranslations('common');
@@ -19,7 +21,7 @@ export default function PatientsPage() {
   const { data, isLoading } = usePatients({ search, page, limit: 25, gender: gender || undefined, dateRange: dateRange || undefined });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text-primary">Patients</h1>
         <button
@@ -78,9 +80,9 @@ export default function PatientsPage() {
             </thead>
             <tbody>
               {isLoading ? (
-                <tr><td colSpan={6} className="px-4 py-12 text-center text-text-muted">Loading...</td></tr>
+                <TableSkeleton rows={5} cols={6} />
               ) : data?.data?.length === 0 ? (
-                <tr><td colSpan={6} className="px-4 py-12 text-center text-text-muted">No patients found</td></tr>
+                <tr><td colSpan={6}><EmptyState icon={<Users className="w-8 h-8 text-text-muted" />} title="No patients found" description="Try adjusting your search or register a new patient." /></td></tr>
               ) : (
                 data?.data?.map((patient: any) => {
                   const age = Math.floor((Date.now() - new Date(patient.dateOfBirth).getTime()) / 31557600000);

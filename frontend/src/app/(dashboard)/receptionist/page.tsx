@@ -7,7 +7,7 @@ export default function ReceptionistDashboardPage() {
   const t = useTranslations('common');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center">

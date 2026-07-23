@@ -4,6 +4,8 @@ import { useTodayQueue, useUpdateAppointmentStatus } from '@/hooks/useAppointmen
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Phone, Clock, AlertCircle } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   scheduled: { label: 'Scheduled', color: 'border-l-blue-500' },
@@ -29,10 +31,21 @@ export default function QueuePage() {
     }
   };
 
-  if (isLoading) return <div className="text-center py-12 text-text-muted">Loading queue...</div>;
+  if (isLoading) return (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      {[0, 1, 2, 3].map(i => (
+        <div key={i} className="bg-white rounded-lg border border-border shadow-sm overflow-hidden">
+          <Skeleton className="h-12 rounded-none" />
+          <div className="p-3 space-y-2">
+            {[0, 1].map(j => <Skeleton key={j} className="h-24 w-full" />)}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-text-primary">Queue Management</h1>
@@ -67,15 +80,4 @@ export default function QueuePage() {
                       {col === 'checked_in' && <button onClick={() => handleStatus(card.id, 'in_progress')} className="flex-1 h-7 text-xs rounded bg-purple-50 text-purple-700 font-medium hover:bg-purple-100">Start Visit</button>}
                       {col === 'in_progress' && <button onClick={() => handleStatus(card.id, 'completed')} className="flex-1 h-7 text-xs rounded bg-emerald-50 text-emerald-700 font-medium hover:bg-emerald-100">Complete</button>}
                       {(col === 'checked_in' || col === 'scheduled') && <button onClick={() => handleStatus(card.id, 'cancelled')} className="h-7 px-2 text-xs rounded bg-red-50 text-red-700 font-medium hover:bg-red-100">Cancel</button>}
-                      {(col === 'checked_in' || col === 'scheduled') && <button onClick={() => handleStatus(card.id, 'no_show')} className="h-7 px-2 text-xs rounded bg-slate-50 text-slate-700 font-medium hover:bg-slate-100">No Show</button>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
+                      {(col === 'checked_in' ||

@@ -18,7 +18,7 @@ export default function PatientPortalPage() {
   const router = useRouter();
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
       <div className="bg-white rounded-lg border border-border shadow-sm p-6">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center">

@@ -64,7 +64,7 @@ export default function NurseDashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <h1 className="text-2xl font-bold text-text-primary">Nurse Dashboard</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -6,6 +6,8 @@ import { useAppointments } from '@/hooks/useAppointments';
 import { Plus, Calendar, Search } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { TableSkeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const statusColors: Record<string, string> = {
   scheduled: 'bg-blue-50 text-blue-700 border-blue-200',
@@ -25,7 +27,7 @@ export default function AppointmentsPage() {
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text-primary">Appointments</h1>
         <button onClick={() => router.push('/appointments/new')} className="inline-flex items-center gap-2 h-10 px-4 rounded-md bg-primary-600 text-white text-sm font-medium hover:bg-primary-700">
@@ -51,9 +53,9 @@ export default function AppointmentsPage() {
           </thead>
           <tbody>
             {isLoading ? (
-              <tr><td colSpan={6} className="px-4 py-12 text-center text-text-muted">Loading...</td></tr>
+              <TableSkeleton rows={5} cols={6} />
             ) : apts.length === 0 ? (
-              <tr><td colSpan={6} className="px-4 py-12 text-center text-text-muted">No appointments for this date</td></tr>
+              <tr><td colSpan={6}><EmptyState icon={<Calendar className="w-8 h-8 text-text-muted" />} title="No appointments for this date" description="Select a different date or book a new appointment." /></td></tr>
             ) : apts.map((apt: any) => (
               <tr key={apt.id} onClick={() => router.push(`/appointments/${apt.id}`)} className="border-b border-border last:border-0 hover:bg-bg-secondary/50 cursor-pointer">
                 <td className="px-4 py-3 text-sm font-mono text-text-muted">{apt.appointmentNo}</td>

@@ -14,7 +14,7 @@ export default function PortalAppointments() {
   const apts = (data as any)?.data || [];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 animate-fade-in">
       <h1 className="text-xl font-bold text-text-primary">My Appointments</h1>
       {isLoading ? <p className="text-text-muted">Loading...</p> : apts.length === 0 ? (
         <div className="bg-white rounded-lg border border-border p-8 text-center">

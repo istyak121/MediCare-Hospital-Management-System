@@ -73,7 +73,7 @@ export default function NewAppointmentPage() {
   const eveningSlots = slots.filter((s: any) => s.label === 'Evening');
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
       <h1 className="text-2xl font-bold text-text-primary">Book Appointment</h1>
 
       {/* Stepper */}
