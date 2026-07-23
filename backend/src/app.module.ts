@@ -38,6 +38,18 @@ import { Setting } from './entities/setting.entity';
 
 import { HealthModule } from './modules/health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { PatientsModule } from './modules/patients/patients.module';
+import { DepartmentsModule } from './modules/departments/departments.module';
+import { StaffModule } from './modules/staff/staff.module';
+import { SchedulesModule } from './modules/schedules/schedules.module';
+import { AppointmentsModule } from './modules/appointments/appointments.module';
+import { VitalsModule } from './modules/vitals/vitals.module';
+import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
+import { LabTestsModule } from './modules/lab-tests/lab-tests.module';
+import { PharmacyModule } from './modules/pharmacy/pharmacy.module';
+import { BillingModule } from './modules/billing/billing.module';
+import { AdmissionsModule } from './modules/admissions/admissions.module';
+import { ReportsModule } from './modules/reports/reports.module';
 // AuditSubscriber temporarily removed — will re-enable in Phase 2
 // import { AuditSubscriber } from './common/subscribers/audit.subscriber';
 
@@ -86,6 +98,18 @@ const allEntities = [
     // Feature modules
     HealthModule,
     AuthModule,
+    PatientsModule,
+    DepartmentsModule,
+    StaffModule,
+    SchedulesModule,
+    AppointmentsModule,
+    VitalsModule,
+    PrescriptionsModule,
+    LabTestsModule,
+    PharmacyModule,
+    BillingModule,
+    AdmissionsModule,
+    ReportsModule,
   ],
 
   providers: [
