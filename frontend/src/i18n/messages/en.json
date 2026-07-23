@@ -43,7 +43,8 @@
     "my_appointments": "My Appointments",
     "my_patients": "My Patients",
     "prescriptions": "Prescriptions",
-    "my_schedule": "My Schedule"
+    "my_schedule": "My Schedule",
+    "schedules": "Doctor Schedules"
   },
   "dashboard": {
     "total_patients": "Total Patients",

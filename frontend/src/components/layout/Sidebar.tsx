@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import {
   LayoutDashboard, Users, Calendar, BedDouble, PillBottle,
   FlaskConical, Receipt, UserCog, BarChart3, Settings,
-  ClipboardList, Stethoscope, Syringe, Activity,
+  ClipboardList, Stethoscope, Syringe, Activity, CalendarClock,
 } from 'lucide-react';
 
 interface NavItem {
@@ -23,6 +23,7 @@ const allNavItems: NavItem[] = [
   { label: 'nav.dashboard', href: '/admin', icon: <LayoutDashboard className="w-5 h-5" />, roles: ['super_admin', 'admin', 'receptionist', 'doctor', 'nurse', 'pharmacist', 'lab_technician', 'accountant'] },
   { label: 'nav.patients', href: '/patients', icon: <Users className="w-5 h-5" />, roles: ['super_admin', 'admin', 'receptionist', 'doctor'] },
   { label: 'nav.appointments', href: '/appointments', icon: <Calendar className="w-5 h-5" />, roles: ['super_admin', 'admin', 'receptionist', 'doctor', 'nurse'] },
+  { label: 'nav.schedules', href: '/schedules', icon: <CalendarClock className="w-5 h-5" />, roles: ['super_admin', 'admin', 'doctor'] },
   { label: 'nav.admissions', href: '/admissions', icon: <BedDouble className="w-5 h-5" />, roles: ['super_admin', 'admin', 'receptionist', 'nurse'] },
   { label: 'nav.pharmacy', href: '/pharmacy', icon: <PillBottle className="w-5 h-5" />, roles: ['super_admin', 'admin', 'pharmacist'] },
   { label: 'nav.laboratory', href: '/lab', icon: <FlaskConical className="w-5 h-5" />, roles: ['super_admin', 'admin', 'lab_technician', 'doctor'] },

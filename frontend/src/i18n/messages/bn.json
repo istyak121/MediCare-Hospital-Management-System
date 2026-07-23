@@ -43,7 +43,8 @@
     "my_appointments": "আমার অ্যাপয়েন্টমেন্ট",
     "my_patients": "আমার রোগী",
     "prescriptions": "প্রেসক্রিপশন",
-    "my_schedule": "আমার সময়সূচী"
+    "my_schedule": "আমার সময়সূচী",
+    "schedules": "ডাক্তার সময়সূচী"
   },
   "dashboard": {
     "total_patients": "মোট রোগী",
