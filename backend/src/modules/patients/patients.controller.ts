@@ -7,6 +7,7 @@ import { QueryPatientDto } from './dto/query-patient.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserRole } from '../../entities/enums';
 
 @ApiTags('Patients')
@@ -19,8 +20,8 @@ export class PatientsController {
   @Get()
   @ApiOperation({ summary: 'List patients with search, filters, pagination' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  findAll(@Query() query: QueryPatientDto) {
-    return this.patientsService.findAll(query);
+  findAll(@Query() query: QueryPatientDto, @CurrentUser() user: any) {
+    return this.patientsService.findAll(query, user);
   }
 
   @Post()
@@ -40,57 +41,57 @@ export class PatientsController {
   @Get(':id')
   @ApiOperation({ summary: 'Get patient details with relations' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  findOne(@Param('id') id: string) {
-    return this.patientsService.findOne(id);
+  findOne(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.patientsService.findOne(id, user);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Update patient information' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR)
-  update(@Param('id') id: string, @Body() dto: UpdatePatientDto) {
-    return this.patientsService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdatePatientDto, @CurrentUser() user: any) {
+    return this.patientsService.update(id, dto, user);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Archive (soft-delete) a patient' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
-  remove(@Param('id') id: string) {
-    return this.patientsService.remove(id);
+  remove(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.patientsService.remove(id, user);
   }
 
   @Get(':id/history')
   @ApiOperation({ summary: 'Get aggregated patient history' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  getHistory(@Param('id') id: string) {
-    return this.patientsService.getHistory(id);
+  getHistory(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.patientsService.getHistory(id, user);
   }
 
   @Get(':id/appointments')
   @ApiOperation({ summary: 'Get patient appointments timeline' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  getAppointments(@Param('id') id: string) {
-    return this.patientsService.getAppointments(id);
+  getAppointments(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.patientsService.getAppointments(id, user);
   }
 
   @Get(':id/admissions')
   @ApiOperation({ summary: 'Get patient admission history' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  getAdmissions(@Param('id') id: string) {
-    return this.patientsService.getAdmissions(id);
+  getAdmissions(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.patientsService.getAdmissions(id, user);
   }
 
   @Get(':id/prescriptions')
   @ApiOperation({ summary: 'Get patient prescriptions' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  getPrescriptions(@Param('id') id: string) {
-    return this.patientsService.getPrescriptions(id);
+  getPrescriptions(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.patientsService.getPrescriptions(id, user);
   }
 
   @Get(':id/lab-tests')
   @ApiOperation({ summary: 'Get patient lab tests' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  getLabTests(@Param('id') id: string) {
-    return this.patientsService.getLabTests(id);
+  getLabTests(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.patientsService.getLabTests(id, user);
   }
 
   @Get(':id/invoices')

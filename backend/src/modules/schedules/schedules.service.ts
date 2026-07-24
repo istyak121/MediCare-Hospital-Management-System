@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DoctorSchedule } from '../../entities/doctor-schedule.entity';
 import { Appointment } from '../../entities/appointment.entity';
-import { AppointmentStatus } from '../../entities/enums';
+import { AppointmentStatus, UserRole } from '../../entities/enums';
 
 export interface TimeSlot {
   time: string;
@@ -22,14 +22,22 @@ export class SchedulesService {
     private appointmentRepo: Repository<Appointment>,
   ) {}
 
-  async findByDoctor(doctorId: string) {
+  async findByDoctor(doctorId: string, user?: any) {
+    // DOCTOR can only view their own schedule
+    if (user?.role === UserRole.DOCTOR && doctorId !== user.staffId) {
+      throw new ForbiddenException('You can only view your own schedule');
+    }
     return this.scheduleRepo.find({
       where: { doctorId, isActive: true },
       order: { dayOfWeek: 'ASC', startTime: 'ASC' },
     });
   }
 
-  async upsert(doctorId: string, schedules: Partial<DoctorSchedule>[]) {
+  async upsert(doctorId: string, schedules: Partial<DoctorSchedule>[], user?: any) {
+    // DOCTOR can only edit their own schedule
+    if (user?.role === UserRole.DOCTOR && doctorId !== user.staffId) {
+      throw new ForbiddenException('You can only edit your own schedule');
+    }
     await this.scheduleRepo.delete({ doctorId });
     const newSchedules = schedules.map((s) => {
       const schedule = new DoctorSchedule();

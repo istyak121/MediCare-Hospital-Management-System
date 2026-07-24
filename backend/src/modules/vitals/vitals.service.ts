@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Vitals } from '../../entities/vitals.entity';
 import { Appointment } from '../../entities/appointment.entity';
+import { UserRole } from '../../entities/enums';
 
 export interface VitalsAlert {
   field: string;
@@ -19,7 +20,15 @@ export class VitalsService {
     private aptRepo: Repository<Appointment>,
   ) {}
 
-  async findByAppointment(appointmentId: string) {
+  async findByAppointment(appointmentId: string, user?: any) {
+    // Check access for DOCTOR
+    if (user?.role === UserRole.DOCTOR) {
+      const apt = await this.aptRepo.findOne({ where: { id: appointmentId } });
+      if (!apt || apt.doctorId !== user.staffId) {
+        throw new ForbiddenException('You can only view vitals for your own appointments');
+      }
+    }
+
     const vitals = await this.vitalsRepo.findOne({ where: { appointmentId } });
     if (!vitals) throw new NotFoundException('Vitals not recorded for this appointment');
     return { ...vitals, alerts: this.getAlerts(vitals) };

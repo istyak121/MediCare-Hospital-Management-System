@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MediCare HMS Documentation</title>
+<style>
+@page{margin:18mm;size:A4}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter','Segoe UI',Arial,sans-serif;color:#0f172a;line-height:1.6;font-size:13px;background:#fff}
+.cover{page-break-after:always;text-align:center;background:linear-gradient(135deg,#f0fdfa,#fff,#ccfbf1);min-height:280mm;padding:100px 40px 40px}
+.cover-logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#14b8a6,#0d9488);display:inline-flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 8px 24px rgba(20,184,166,.3);font-size:36px}
+.cover h1{font-size:36px;font-weight:800;color:#0f766e;margin-bottom:8px}
+.cover h2{font-size:18px;font-weight:400;color:#475569;margin-bottom:30px}
+.cover .ver{display:inline-block;padding:6px 16px;border-radius:999px;background:#ccfbf1;color:#0f766e;font-size:14px;font-weight:600;margin-bottom:30px}
+.cover .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:30px auto;max-width:500px}
+.cover .sb{background:rgba(255,255,255,.7);border-radius:12px;padding:16px;text-align:center}
+.cover .sb .n{font-size:24px;font-weight:800;color:#0d9488}.cover .sb .l{font-size:11px;color:#64748b}
+h1{font-size:22px;font-weight:700;color:#0d9488;margin:28px 0 12px;padding-bottom:6px;border-bottom:2px solid #ccfbf1}
+h2{font-size:17px;font-weight:700;color:#0f172a;margin:22px 0 10px}
+h3{font-size:14px;font-weight:600;color:#334155;margin:16px 0 8px}
+p{margin-bottom:8px}ul,ol{margin-left:20px;margin-bottom:10px}li{margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+th{background:#f0fdfa;color:#0f766e;font-weight:600;text-align:left;padding:8px 10px;border:1px solid #ccfbf1}
+td{padding:7px 10px;border:1px solid #e2e8f0;vertical-align:top}
+tr:nth-child(even) td{background:#f8fafc}
+code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:11px;color:#0d9488}
+.pb{page-break-before:always}
+.rc{border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin:14px 0;page-break-inside:avoid}
+.rc .rh{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.rc .ri{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.fl{list-style:none;margin-left:0}.fl li{padding:4px 0;border-bottom:1px solid #f1f5f9}.fl li:last-child{border-bottom:none}
+.b{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600}
+.bg{background:#d1fae5;color:#065f46}.bb{background:#dbeafe;color:#1e40af}.ba{background:#fef3c7;color:#92400e}
+.br{background:#fee2e2;color:#991b1b}.bt{background:#ccfbf1;color:#0f766e}
+.sbox{background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:14px 18px;margin:16px 0}
+pre{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;font-size:11px;overflow-x:auto;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<!-- COVER -->
+<div class="cover">
+<div class="cover-logo">🏥</div>
+<h1>MediCare HMS</h1>
+<h2>Hospital Management System — Project Documentation</h2>
+<div class="ver">Phase 1 &amp; 2 Complete</div>
+<p style="max-width:500px;margin:0 auto 20px;color:#475569;font-size:14px">A full-stack hospital management system built with Next.js 15, NestJS, PostgreSQL, and TypeORM. Covers patient management, appointments, clinical workflows, pharmacy, billing, and role-based access control.</p>
+<div class="sg"><div class="sb"><div class="n">9</div><div class="l">User Roles</div></div><div class="sb"><div class="n">14</div><div class="l">Backend Modules</div></div><div class="sb"><div class="n">26</div><div class="l">DB Entities</div></div><div class="sb"><div class="n">73</div><div class="l">API Endpoints</div></div></div>
+<div class="sg"><div class="sb"><div class="n">42</div><div class="l">Frontend Pages</div></div><div class="sb"><div class="n">13</div><div class="l">UI Components</div></div><div class="sb"><div class="n">2</div><div class="l">Languages</div></div><div class="sb"><div class="n">15</div><div class="l">Active Pages</div></div></div>
+<p style="margin-top:40px;font-size:13px;color:#64748b">Tech Stack: Next.js 15 · React 19 · NestJS 11 · PostgreSQL · TypeORM · Tailwind v4 · Zustand · React Query v5<br>Generated: July 2026</p>
+</div>
+
+<!-- TOC -->
+<div class="pb"></div>
+<h1>Table of Contents</h1>
+<ol><li>Project Overview</li><li>System Architecture</li><li>Technology Stack</li><li>User Roles &amp; Access Control</li><li>Features by Module</li><li>Backend API Endpoints</li><li>Frontend Pages</li><li>Data Privacy &amp; Security</li><li>Default Login Credentials</li><li>How to Start</li><li>Future Phases</li></ol>
+
+<!-- 1. OVERVIEW -->
+<div class="pb"></div>
+<h1>1. Project Overview</h1>
+<p>MediCare HMS is a comprehensive hospital management system designed for healthcare facilities in Bangladesh. It digitizes the entire patient journey — from appointment booking and registration, through clinical consultations, vitals recording, prescriptions, lab tests, pharmacy dispensing, billing, and inpatient admissions.</p>
+<div class="sbox"><strong>15 fully functional pages</strong> with real data fetching, plus 9 reusable UI components, role-based access control with data ownership enforcement, bilingual support (English/Bengali), and a public TV display screen for waiting rooms.</div>
+<table><tr><th>Area</th><th>Status</th><th>Details</th></tr>
+<tr><td>Authentication</td><td><span class="b bg">Complete</span></td><td>JWT + httpOnly cookies, refresh token rotation, account lockout</td></tr>
+<tr><td>Patient Management</td><td><span class="b bg">Complete</span></td><td>Registration, search, detail with 7 tabs, full medical history</td></tr>
+<tr><td>Appointments</td><td><span class="b bg">Complete</span></td><td>4-step booking wizard, slot locking, queue management (Kanban)</td></tr>
+<tr><td>Doctor Schedules</td><td><span class="b bg">Complete</span></td><td>Weekly schedule grid, slot generation, availability</td></tr>
+<tr><td>Vitals Recording</td><td><span class="b bg">Complete</span></td><td>Nurse dashboard, 8 vitals fields, auto BMI, clinical alerts</td></tr>
+<tr><td>Role-Based Access</td><td><span class="b bg">Complete</span></td><td>9 roles, ownership-scoped queries, frontend + backend enforcement</td></tr>
+<tr><td>Backend APIs</td><td><span class="b bg">Complete</span></td><td>14 modules, 73 endpoints, Swagger documented</td></tr>
+<tr><td>Frontend UI</td><td><span class="b bg">Complete</span></td><td>15 active pages, 9 UI components, skeletons, empty states, dark mode</td></tr>
+<tr><td>Billing / Pharmacy / Lab / Prescriptions</td><td><span class="b ba">Backend Ready</span></td><td>APIs built, frontend pages are placeholders</td></tr>
+<tr><td>Reports / Settings / Notifications</td><td><span class="b ba">Backend Ready</span></td><td>APIs built, frontend pages are placeholders</td></tr>
+</table>
+
+<!-- 2. ARCHITECTURE -->
+<div class="pb"></div>
+<h1>2. System Architecture</h1>
+<pre>┌─────────────────────────────────────────────────────────┐
+│                    USER'S BROWSER                         │
+│  localhost:3000  (Next.js 15 frontend)                   │
+│  ┌─────────────────────────────────────────────────────┐ │
+│  │  Middleware (role-based route protection)            │ │
+│  │  App Router pages → React Query → apiFetch()        │ │
+│  │  Zustand stores (auth, sidebar, theme)               │ │
+│  └──────────────────────┬──────────────────────────────┘ │
+└─────────────────────────┼───────────────────────────────┘
+                          │ HTTPS (JWT in httpOnly cookie)
+┌─────────────────────────┼───────────────────────────────┐
+│              NESTJS BACKEND (localhost:5000)             │
+│  ┌──────────────────────┴──────────────────────────────┐│
+│  │  JwtAuthGuard → RolesGuard → @Roles() → Service      ││
+│  │  14 modules · 73 endpoints · Swagger at /api/docs    ││
+│  └──────────────────────┬──────────────────────────────┘│
+└─────────────────────────┼───────────────────────────────┘
+                          │ TypeORM
+┌─────────────────────────┼───────────────────────────────┐
+│            POSTGRESQL DATABASE                           │
+│  26 entities · auto-sync · seed data                     │
+└─────────────────────────────────────────────────────────┘</pre>
+<h2>Project Structure</h2>
+<pre>HMS/
+├── backend/                    # NestJS API (port 5000)
+│   ├── src/modules/            # 14 feature modules
+│   ├── src/entities/           # 26 TypeORM entities
+│   ├── src/common/             # Guards, decorators
+│   └── src/seeds/              # Demo data seeder
+├── frontend/                   # Next.js 15 App (port 3000)
+│   ├── src/app/                # 42 pages (App Router)
+│   ├── src/components/         # 13 components (9 UI primitives)
+│   ├── src/hooks/              # React Query hooks
+│   ├── src/stores/             # Zustand stores
+│   └── src/i18n/               # English + Bengali
+├── shared/                     # Shared types
+├── start.bat                   # Windows quick-start script
+├── start.sh                    # Linux/Mac quick-start script
+└── package.json                # Workspace root</pre>
+
+<!-- 3. TECH STACK -->
+<div class="pb"></div>
+<h1>3. Technology Stack</h1>
+<table><tr><th>Layer</th><th>Technology</th><th>Version</th><th>Purpose</th></tr>
+<tr><td>Frontend Framework</td><td>Next.js (App Router)</td><td>15</td><td>SSR/SSG, routing, React Server Components</td></tr>
+<tr><td>UI Library</td><td>React</td><td>19</td><td>Component rendering</td></tr>
+<tr><td>Styling</td><td>Tailwind CSS</td><td>v4</td><td>Utility-first CSS with @theme tokens</td></tr>
+<tr><td>State Management</td><td>Zustand</td><td>5</td><td>Auth, sidebar, theme stores (persisted)</td></tr>
+<tr><td>Data Fetching</td><td>TanStack React Query</td><td>5</td><td>Server state, caching, auto-refetch</td></tr>
+<tr><td>Forms</td><td>React Hook Form + Zod</td><td>7 / 3</td><td>Form validation</td></tr>
+<tr><td>Icons</td><td>lucide-react</td><td>0.468</td><td>SVG icon set</td></tr>
+<tr><td>Toasts</td><td>sonner</td><td>1.7</td><td>Toast notifications</td></tr>
+<tr><td>i18n</td><td>next-intl</td><td>3.26</td><td>English + Bengali translations</td></tr>
+<tr><td>Backend Framework</td><td>NestJS</td><td>11</td><td>Modular Node.js framework</td></tr>
+<tr><td>ORM</td><td>TypeORM</td><td>0.3</td><td>PostgreSQL entity mapping</td></tr>
+<tr><td>Database</td><td>PostgreSQL</td><td>16</td><td>Relational database</td></tr>
+<tr><td>Auth</td><td>Passport-JWT</td><td>4</td><td>JWT strategy + refresh tokens</td></tr>
+<tr><td>API Docs</td><td>Swagger (OpenAPI)</td><td>11</td><td>Auto-generated API docs</td></tr>
+<tr><td>Validation</td><td>class-validator</td><td>—</td><td>DTO validation</td></tr>
+<tr><td>Security</td><td>Helmet, bcrypt, Throttler</td><td>—</td><td>HTTP headers, password hashing, rate limiting</td></tr>
+</table>
+
+<!-- 4. ROLES -->
+<div class="pb"></div>
+<h1>4. User Roles &amp; Access Control</h1>
+<p>The system has <strong>9 distinct roles</strong>, each with different permissions. Access is enforced at four layers:</p>
+<ol><li><strong>Frontend middleware</strong> — checks JWT role against route rules, redirects unauthorized users</li>
+<li><strong>Frontend dashboard layout</strong> — client-side role-gate mirroring middleware</li>
+<li><strong>Backend RolesGuard</strong> — checks <code>@Roles()</code> decorator on every endpoint</li>
+<li><strong>Backend ownership scoping</strong> — service queries auto-filter by <code>staffId</code> or <code>patientId</code> from JWT</li></ol>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#fef3c7">👑</div><div><h3>Super Admin</h3><div style="font-size:12px;color:#64748b">Full system access — no restrictions</div></div></div>
+<p><strong>Email:</strong> <code>admin@medicare.com</code> &nbsp; <strong>Password:</strong> <code>Admin@123</code></p>
+<ul class="fl"><li>✅ Can view and manage everything in the system</li><li>✅ Access to all dashboards, all modules, all data</li><li>✅ Can manage staff, settings, reports, audit logs</li><li>✅ Can edit any doctor's schedule, discharge any patient</li><li>📍 Lands on: <code>/admin</code> dashboard</li></ul></div>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#dbeafe">⚙️</div><div><h3>Admin</h3><div style="font-size:12px;color:#64748b">Full system access (same as Super Admin)</div></div></div>
+<p><strong>Email:</strong> <code>admin@medicare.com</code> (shared in demo)</p>
+<ul class="fl"><li>✅ Same permissions as Super Admin — all modules accessible</li><li>✅ Can manage staff, billing, patients, appointments</li><li>📍 Lands on: <code>/admin</code> dashboard</li></ul></div>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#d1fae5">🩺</div><div><h3>Doctor</h3><div style="font-size:12px;color:#64748b">Sees only their own patients &amp; appointments</div></div></div>
+<p><strong>Email:</strong> <code>doctor@medicare.com</code> &nbsp; <strong>Password:</strong> <code>Doctor@123</code></p>
+<p><strong>Data privacy enforced:</strong> A doctor can only see patients they have appointments with. They cannot view other doctors' appointments, prescriptions, or patients.</p>
+<ul class="fl"><li>✅ View own appointments (filtered by <code>doctorId</code> automatically)</li><li>✅ View patients they have treated (relationship check)</li><li>✅ Create prescriptions for own patients</li><li>✅ Request lab tests for own patients</li><li>✅ View vitals for own appointments</li><li>✅ Edit own weekly schedule only</li><li>✅ Discharge own admitted patients</li><li>🔒 Cannot see other doctors' patients or appointments</li><li>📍 Lands on: <code>/doctor</code> dashboard</li></ul></div>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#ede9fe">👩‍⚕️</div><div><h3>Nurse</h3><div style="font-size:12px;color:#64748b">Ward-level access — vitals recording &amp; queue management</div></div></div>
+<p><strong>Email:</strong> <code>nurse@medicare.com</code> &nbsp; <strong>Password:</strong> <code>Nurse@123</code></p>
+<ul class="fl"><li>✅ View today's appointment queue (all patients, ward-level)</li><li>✅ Record patient vitals (temperature, BP, pulse, SpO2, weight, height, BMI auto-calc)</li><li>✅ View vitals for any appointment</li><li>✅ View all patients (ward-level access)</li><li>✅ Admit patients, transfer beds</li><li>✅ Add progress notes to admissions</li><li>✅ Clinical alerts (hypertensive crisis, hyperpyrexia, hypoxemia)</li><li>📍 Lands on: <code>/nurse</code> dashboard</li></ul></div>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#fef3c7">🏥</div><div><h3>Receptionist</h3><div style="font-size:12px;color:#64748b">Patient registration &amp; appointment management</div></div></div>
+<p><strong>Email:</strong> <code>reception@medicare.com</code> &nbsp; <strong>Password:</strong> <code>Reception@123</code></p>
+<ul class="fl"><li>✅ Register new patients</li><li>✅ Search and view all patients</li><li>✅ Book appointments (4-step wizard)</li><li>✅ Manage appointment queue (check-in, start visit, complete, cancel)</li><li>✅ View all appointments</li><li>✅ Admit patients</li><li>✅ Create invoices and process payments</li><li>📍 Lands on: <code>/receptionist</code> dashboard</li></ul></div>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#fee2e2">💊</div><div><h3>Pharmacist</h3><div style="font-size:12px;color:#64748b">Medicine inventory &amp; dispensing</div></div></div>
+<p><strong>Email:</strong> <code>pharmacist@medicare.com</code> &nbsp; <strong>Password:</strong> <code>Pharmacist@123</code></p>
+<ul class="fl"><li>✅ View medicine inventory</li><li>✅ Add, update medicines</li><li>✅ Adjust stock levels</li><li>✅ View low-stock alerts</li><li>✅ Dispense medicines</li><li>🔒 Cannot access patient medical records</li><li>📍 Lands on: <code>/pharmacy</code> dashboard</li></ul></div>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#dbeafe">🔬</div><div><h3>Lab Technician</h3><div style="font-size:12px;color:#64748b">Lab test processing — all tests visible for processing</div></div></div>
+<p><strong>Email:</strong> <code>lab@medicare.com</code> &nbsp; <strong>Password:</strong> <code>Lab@123</code></p>
+<ul class="fl"><li>✅ View all lab tests (for processing)</li><li>✅ Collect samples</li><li>✅ Start processing tests</li><li>✅ Complete tests with results</li><li>✅ View lab test types catalog</li><li>🔒 Cannot access patient medical records beyond lab tests</li><li>📍 Lands on: <code>/lab</code> dashboard</li></ul></div>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#d1fae5">🧾</div><div><h3>Accountant</h3><div style="font-size:12px;color:#64748b">Billing, invoices &amp; financial reports</div></div></div>
+<p><strong>Email:</strong> <code>accountant@medicare.com</code> &nbsp; <strong>Password:</strong> <code>Accountant@123</code></p>
+<ul class="fl"><li>✅ View all invoices and payments</li><li>✅ Create invoices</li><li>✅ Process payments</li><li>✅ View daily collection reports</li><li>✅ View outstanding bills</li><li>🔒 Cannot access medical records (prescriptions, vitals, lab results)</li><li>📍 Lands on: <code>/accountant</code> dashboard</li></ul></div>
+
+<div class="rc"><div class="rh"><div class="ri" style="background:#ccfbf1">🧑</div><div><h3>Patient</h3><div style="font-size:12px;color:#64748b">Self-service portal — sees only their own data</div></div></div>
+<p><strong>Data privacy enforced:</strong> A patient can only see their own appointments, bills, lab reports, and prescriptions. All queries are auto-filtered by <code>patientId</code> from the JWT.</p>
+<ul class="fl"><li>✅ View own appointments</li><li>✅ View own prescriptions</li><li>✅ View own lab reports</li><li>✅ View own invoices/bills</li><li>🔒 Cannot see any other patient's data — enforced at database query level</li><li>📍 Lands on: <code>/portal</code> dashboard</li></ul></div>
+
+<!-- 5. FEATURES -->
+<div class="pb"></div>
+<h1>5. Features by Module</h1>
+
+<h2>5.1 Authentication &amp; Security</h2>
+<table><tr><th>Feature</th><th>Description</th></tr>
+<tr><td>JWT + httpOnly cookies</td><td>Access token (15 min) in httpOnly cookie; refresh token (7 days) with path restriction</td></tr>
+<tr><td>Refresh token rotation</td><td>Each refresh generates a new token; old one revoked. Token reuse detection revokes entire family</td></tr>
+<tr><td>Account lockout</td><td>After 5 failed login attempts, account is locked for 15 minutes</td></tr>
+<tr><td>Bcrypt password hashing</td><td>12 rounds — passwords never stored in plaintext</td></tr>
+<tr><td>Helmet security headers</td><td>XSS protection, content-type sniffing prevention, etc.</td></tr>
+<tr><td>Rate limiting (Throttler)</td><td>Prevents brute-force attacks on auth endpoints</td></tr>
+<tr><td>Role-based access (RBAC)</td><td><code>@Roles()</
+
+<!-- 6. API ENDPOINTS -->
+<div class="pb"></div>
+<h1>6. Backend API Endpoints</h1>
+<p>Base URL: <code>http://localhost:5000/api/v1</code> | Swagger docs: <code>http://localhost:5000/api/docs</code></p>
+<p>All endpoints require JWT unless marked <span class="b bg">Public</span>.</p>
+<table><tr><th>Method</th><th>Endpoint</th><th>Roles</th><th>Description</th></tr>
+<tr><td colspan="4"><strong>Authentication</strong></td></tr>
+<tr><td>POST</td><td><code>/auth/login</code></td><td><span class="b bg">Public</span></td><td>Login, returns JWT in cookies</td></tr>
+<tr><td>POST</td><td><code>/auth/refresh</code></td><td><span class="b bg">Public</span></td><td>Refresh access token</td></tr>
+<tr><td>POST</td><td><code>/auth/logout</code></td><td>Authenticated</td><td>Revoke tokens, clear cookies</td></tr>
+<tr><td>GET</td><td><code>/auth/me</code></td><td>Authenticated</td><td>Get current user profile</td></tr>
+<tr><td colspan="4"><strong>Patients</strong></td></tr>
+<tr><td>GET</td><td><code>/patients</code></td><td>Admin, Rec, Doctor, Nurse</td><td>List with search, filters, pagination</td></tr>
+<tr><td>POST</td><td><code>/patients</code></td><td>Admin, Rec</td><td>Register new patient</td></tr>
+<tr><td>GET</td><td><code>/patients/:id</code></td><td>Admin, Rec, Doctor, Nurse</td><td>Full patient record (ownership checked)</td></tr>
+<tr><td>PUT</td><td><code>/patients/:id</code></td><td>Admin, Rec, Doctor</td><td>Update patient info</td></tr>
+<tr><td>DELETE</td><td><code>/patients/:id</code></td><td>Admin</td><td>Archive (soft-delete)</td></tr>
+<tr><td>GET</td><td><code>/patients/:id/history</code></td><td>Admin, Rec, Doctor, Nurse</td><td>Aggregated medical history</td></tr>
+<tr><td>GET</td><td><code>/patients/:id/appointments</code></td><td>Admin, Rec, Doctor, Nurse</td><td>Patient appointment timeline</td></tr>
+<tr><td>GET</td><td><code>/patients/:id/prescriptions</code></td><td>Admin, Rec, Doctor, Nurse</td><td>Patient prescriptions</td></tr>
+<tr><td>GET</td><td><code>/patients/:id/lab-tests</code></td><td>Admin, Rec, Doctor, Nurse</td><td>Patient lab tests</td></tr>
+<tr><td colspan="4"><strong>Appointments</strong></td></tr>
+<tr><td>GET</td><td><code>/appointments</code></td><td>All staff + Patient</td><td>List (auto-scoped by role)</td></tr>
+<tr><td>POST</td><td><code>/appointments</code></td><td>Admin, Rec, Patient</td><td>Book appointment (slot locking)</td></tr>
+<tr><td>GET</td><td><code>/appointments/today-queue</code></td><td>All staff</td><td>Today's queue grouped by status</td></tr>
+<tr><td>GET</td><td><code>/appointments/:id</code></td><td>All staff + Patient</td><td>Details (ownership checked)</td></tr>
+<tr><td>PUT</td><td><code>/appointments/:id/status</code></td><td>All staff</td><td>Update status</td></tr>
+<tr><td colspan="4"><strong>Schedules</strong></td></tr>
+<tr><td>GET</td><td><code>/schedules/doctor/:id</code></td><td>Authenticated</td><td>Doctor's weekly schedule</td></tr>
+<tr><td>PUT</td><td><code>/schedules/doctor/:id</code></td><td>Admin, Doctor</td><td>Set schedule (own only)</td></tr>
+<tr><td>GET</td><td><code>/schedules/available</code></td><td>Authenticated</td><td>Available slots for a doctor</td></tr>
+<tr><td colspan="4"><strong>Vitals</strong></td></tr>
+<tr><td>POST</td><td><code>/appointments/:id/vitals</code></td><td>Admin, Nurse</td><td>Record vitals</td></tr>
+<tr><td>GET</td><td><code>/appointments/:id/vitals</code></td><td>Admin, Doctor, Nurse</td><td>Get vitals (doctor ownership checked)</td></tr>
+<tr><td colspan="4"><strong>Prescriptions</strong></td></tr>
+<tr><td>GET</td><td><code>/prescriptions</code></td><td>Admin, Doctor, Nurse, Patient</td><td>List (auto-scoped by role)</td></tr>
+<tr><td>POST</td><td><code>/prescriptions</code></td><td>Admin, Doctor</td><td>Create prescription</td></tr>
+<tr><td>GET</td><td><code>/prescriptions/:id</code></td><td>Admin, Doctor, Nurse, Patient</td><td>Details (ownership checked)</td></tr>
+<tr><td colspan="4"><strong>Lab Tests</strong></td></tr>
+<tr><td>GET</td><td><code>/lab-tests</code></td><td>Admin, Doctor, Lab, Patient</td><td>List (auto-scoped by role)</td></tr>
+<tr><td>POST</td><td><code>/lab-tests</code></td><td>Admin, Doctor</td><td>Request a lab test</td></tr>
+<tr><td>GET</td><td><code>/lab-tests/:id</code></td><td>Admin, Doctor, Lab, Patient</td><td>Details (ownership checked)</td></tr>
+<tr><td>PUT</td><td><code>/lab-tests/:id/collect</code></td><td>Admin, Lab</td><td>Mark sample collected</td></tr>
+<tr><td>PUT</td><td><code>/lab-tests/:id/complete</code></td><td>Admin, Lab</td><td>Complete with results</td></tr>
+<tr><td colspan="4"><strong>Admissions</strong></td></tr>
+<tr><td>GET</td><td><code>/admissions</code></td><td>Admin, Rec, Nurse, Doctor</td><td>List (doctor scoped)</td></tr>
+<tr><td>POST</td><td><code>/admissions</code></td><td>Admin, Rec, Nurse</td><td>Admit patient</td></tr>
+<tr><td>GET</td><td><code>/admissions/:id</code></td><td>Admin, Rec, Nurse, Doctor</td><td>Details (ownership checked)</td></tr>
+<tr><td>PUT</td><td><code>/admissions/:id/discharge</code></td><td>Admin, Doctor</td><td>Discharge (ownership checked)</td></tr>
+<tr><td colspan="4"><strong>Billing</strong></td></tr>
+<tr><td>GET</td><td><code>/billing/invoices</code></td><td>Admin, Rec, Accountant, Patient</td><td>List (patient scoped)</td></tr>
+<tr><td>POST</td><td><code>/billing/invoices</code></td><td>Admin, Rec, Accountant</td><td>Create invoice</td></tr>
+<tr><td>GET</td><td><code>/billing/invoices/:id</code></td><td>Admin, Rec, Accountant, Patient</td><td>Details (patient scoped)</td></tr>
+<tr><td>POST</td><td><code>/billing/invoices/:id/payments</code></td><td>Admin, Rec, Accountant</td><td>Add payment</td></tr>
+<tr><td colspan="4"><strong>Staff &amp; Departments</strong></td></tr>
+<tr><td>GET</td><td><code>/staff</code></td><td>Admin</td><td>List all staff</td></tr>
+<tr><td>GET</td><td><code>/staff/doctors</code></td><td>Authenticated</td><td>List doctors (for booking)</td></tr>
+<tr><td>GET</td><td><code>/departments</code></td><td>Authenticated</td><td>List departments</td></tr>
+</table>
+
+<!-- 7. FRONTEND PAGES -->
+<div class="pb"></div>
+<h1>7. Frontend Pages</h1>
+<p>15 pages are fully functional with real data. 27 pages are polished placeholders.</p>
+<h2>Active Pages (with real data)</h2>
+<table><tr><th>Page</th><th>Route</th><th>Roles</th><th>Features</th></tr>
+<tr><td>Login</td><td><code>/login</code></td><td><span class="b bg">Public</span></td><td>Gradient background, demo account quick-fill buttons</td></tr>
+<tr><td>Admin Dashboard</td><td><code>/admin</code></td><td>Admin</td><td>6 stat cards, revenue/activity panels</td></tr>
+<tr><td>Doctor Dashboard</td><td><code>/doctor</code></td><td>Doctor</td><td>4 quick stats, today's schedule placeholder</td></tr>
+<tr><td>Nurse Dashboard</td><td><code>/nurse</code></td><td>Nurse</td><td>Pending vitals queue + vitals form, clinical alerts</td></tr>
+<tr><td>Patients List</td><td><code>/patients</code></td><td>Admin, Rec, Doctor</td><td>Search, filters, pagination, skeleton loading</td></tr>
+<tr><td>Patient Detail</td><td><code>/patients/:id</code></td><td>Admin, Rec, Doctor, Nurse</td><td>7-tab interface, summary cards, medical history</td></tr>
+<tr><td>New Patient</td><td><code>/patients/new</code></td><td>Admin, Rec</td><td>Registration form</td></tr>
+<tr><td>Appointments List</td><td><code>/appointments</code></td><td>Admin, Rec, Doctor, Nurse</td><td>Date filter, status badges, table</td></tr>
+<tr><td>Book Appointment</td><td><code>/appointments/new</code></td><td>Admin, Rec</td><td>4-step wizard: patient → doctor → time → confirm</td></tr>
+<tr><td>Queue Management</td><td><code>/appointments/queue</code></td><td>Admin, Rec, Doctor, Nurse</td><td>Kanban board, 4 status columns, action buttons</td></tr>
+<tr><td>Schedules</td><td><code>/schedules</code></td><td>Admin, Doctor</td><td>Doctor selector, 7-day calendar grid</td></tr>
+<tr><td>Patient Portal</td><td><code>/portal</code></
+code></td><td>Patient</td><td>Welcome card, 5 menu cards</td></tr>
+<tr><td>Portal: Appointments</td><td><code>/portal/appointments</code></td><td>Patient</td><td>Own appointments (auto-scoped)</td></tr>
+<tr><td>Portal: Bills</td><td><code>/portal/bills</code></td><td>Patient</td><td>Own invoices (auto-scoped)</td></tr>
+<tr><td>Portal: Lab Reports</td><td><code>/portal/lab-reports</code></td><td>Patient</td><td>Own lab tests (auto-scoped)</td></tr>
+<tr><td>Portal: Prescriptions</td><td><code>/portal/prescriptions</code></td><td>Patient</td><td>Own prescriptions (auto-scoped)</td></tr>
+<tr><td>TV Display</td><td><code>/display/queue</code></td><td><span class='b bg'>Public</span></td><td>Full-screen Now Serving + next 5, live clock, auto-refresh</td></tr>
+</table>
+<h2>Placeholder Pages (Backend Ready)</h2>
+<table><tr><th>Page</th><th>Route</th><th>What's Coming</th></tr>
+<tr><td>Receptionist</td><td><code>/receptionist</code></td><td>Patient registration, appointment booking, queue management</td></tr>
+<tr><td>Pharmacy</td><td><code>/pharmacy</code></td><td>Inventory, dispensing, stock alerts</td></tr>
+<tr><td>Lab</td><td><code>/lab</code></td><td>Test requests, sample collection, results</td></tr>
+<tr><td>Billing</td><td><code>/billing</code></td><td>Invoices, payments, collection reports</td></tr>
+<tr><td>Prescriptions</td><td><code>/prescriptions</code></td><td>Create prescriptions, medicine search</td></tr>
+<tr><td>Staff</td><td><code>/staff</code></td><td>Staff directory, roles, departments</td></tr>
+<tr><td>Admissions</td><td><code>/admissions</code></td><td>Patient admission, bed management, discharge</td></tr>
+<tr><td>Accountant</td><td><code>/accountant</code></td><td>Revenue tracking, expense management</td></tr>
+<tr><td>Reports</td><td><code>/reports</code></td><td>Analytics, patient stats, financial reports</td></tr>
+<tr><td>Settings</td><td><code>/settings</code></td><td>Hospital settings, user management</td></tr>
+</table>
+<div class='pb'></div>
+<h1>8. Data Privacy and Security</h1>
+<p>The system enforces data privacy at <strong>four layers</strong>.</p>
+<h2>Layer 1: Frontend Middleware</h2>
+<p>Next.js middleware extracts JWT role from cookie, checks against 16 route-to-role patterns, redirects unauthorized users.</p>
+<h2>Layer 2: Frontend Dashboard Layout</h2>
+<p>Client-side mirror of the middleware.</p>
+<h2>Layer 3: Backend RolesGuard</h2>
+<p>Every endpoint has @Roles() checked by RolesGuard. Throws ForbiddenException if role not allowed.</p>
+<h2>Layer 4: Backend Ownership Scoping</h2>
+<table><tr><th>Role</th><th>What they see</th><th>How it's enforced</th></tr>
+<tr><td>Doctor</td><td>Only their own appointments, patients, prescriptions, lab requests</td><td>WHERE doctorId = staffId; findOne checks ownership</td></tr>
+<tr><td>Patient</td><td>Only their own appointments, bills, lab reports, prescriptions</td><td>WHERE patientId = patientId from JWT</td></tr>
+<tr><td>Nurse</td><td>All patients (ward-level)</td><td>No patient filter</td></tr>
+<tr><td>Receptionist</td><td>All patients and appointments</td><td>No filter</td></tr>
+<tr><td>Pharmacist</td><td>Medicine inventory only</td><td>@Roles restricts</td></tr>
+<tr><td>Lab Tech</td><td>All lab tests for processing</td><td>@Roles restricts</td></tr>
+<tr><td>Accountant</td><td>Billing/invoices only</td><td>@Roles restricts</td></tr>
+<tr><td>Admin</td><td>Everything</td><td>No filter</td></tr>
+</table>
+<div class='sbox'><strong>Result:</strong> A doctor can only see their own appointments and patients they have treated. Even if they guess another patient UUID, the backend returns 403. A patient can only see their own data.</div>
+<div class='pb'></div>
+<h1>9. Default Login Credentials</h1>
+<table><tr><th>Role</th><th>Email</th><th>Password</th><th>Landing</th></tr>
+<tr><td>Super Admin</td><td><code>admin@medicare.com</code></td><td><code>Admin@123</code></td><td>/admin</td></tr>
+<tr><td>Doctor</td><td><code>doctor@medicare.com</code></td><td><code>Doctor@123</code></td><td>/doctor</td></tr>
+<tr><td>Receptionist</td><td><code>reception@medicare.com</code></td><td><code>Reception@123</code></td><td>/receptionist</td></tr>
+<tr><td>Nurse</td><td><code>nurse@medicare.com</code></td><td><code>Nurse@123</code></td><td>/nurse</td></tr>
+<tr><td>Pharmacist</td><td><code>pharmacist@medicare.com</code></td><td><code>Pharmacist@123</code></td><td>/pharmacy</td></tr>
+<tr><td>Lab Technician</td><td><code>lab@medicare.com</code></td><td><code>Lab@123</code></td><td>/lab</td></tr>
+<tr><td>Accountant</td><td><code>accountant@medicare.com</code></td><td><code>Accountant@123</code></td><td>/accountant</td></tr>
+</table>
+<p>15 demo doctors: all with password <code>Doctor@123</code>, email pattern <code>dr.firstname.lastname@medicare.com</code></p>
+<div class='pb'></div>
+<h1>10. How to Start</h1>
+<div class='sbox'><strong>Windows:</strong> Double-click <code>start.bat</code><br><strong>Linux/Mac:</strong> Run <code>./start.sh</code><br>Starts backend (port 5000) + frontend (port 3000) concurrently.</div>
+<ol><li>Install: <code>npm install</code></li><li>Database: Create PostgreSQL db <code>medicare_hms</code> (user: postgres / pass: 1234)</li><li>Seed: <code>npm run seed</code></li><li>Start: <code>npm run dev</code></li><li>Open: <code>http://localhost:3000</code></li></ol>
+<div class='pb'></div>
+<h1>11. Future Phases</h1>
+<h2>Phase 3 — Frontend Page Implementation</h2>
+<table><tr><th>Module</th><th>Backend</th><th>Frontend Work</th></tr>
+<tr><td>Billing</td><td>Ready</td><td>Invoice list, create form, payments, collection report</td></tr>
+<tr><td>Pharmacy</td><td>Ready</td><td>Medicine inventory, stock adjustment, dispense form</td></tr>
+<tr><td>Lab Tests</td><td>Ready</td><td>Test request list, status workflow, result entry</td></tr>
+<tr><td>Prescriptions</td><td>Ready</td><td>Prescription list, create form, print/export</td></tr>
+<tr><td>Admissions</td><td>Ready</td><td>Admission list, bed/ward board, discharge form</td></tr>
+<tr><td>Staff</td><td>Ready</td><td>Staff directory, role management</td></tr>
+<tr><td>Reports</td><td>Ready</td><td>Dashboard with Recharts, export to PDF/Excel</td></tr>
+</table>
+<h2>Phase 4 — Enhancements</h2>
+<ul><li>Charts and data visualization</li><li>Mobile-responsive sidebar drawer</li><li>Real-time notifications (WebSocket)</li><li>PDF export for invoices, prescriptions</li><li>Full dark mode across all pages</li><li>Accessibility improvements</li></ul>
+<h2>Phase 5 — Deployment</h2>
+<ul><li>Dockerfile + docker-compose</li><li>CI/CD pipeline</li><li>Jest unit tests + e2e tests</li></ul>
+<div class='pb'></div>
+<div style='text-align:center;padding-top:100px'>
+<div class='cover-logo' style='margin:0 auto 16px'>🏥</div>
+<h1 style='border:none;color:#0d9488'>MediCare HMS</h1>
+<p style='color:#64748b;margin-top:8px'>Phase 1 and 2 Documentation — Complete</p>
+<p style='color:#94a3b8;margin-top:40px;font-size:12px'>Built with Next.js 15, NestJS 11, PostgreSQL, TypeORM<br>Tailwind CSS v4, Zustand, React Query v5<br>Generated July 2026</p>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import {
-  Injectable, NotFoundException, BadRequestException, ConflictException,
+  Injectable, NotFoundException, BadRequestException, ConflictException, ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
@@ -8,7 +8,7 @@ import { Patient } from '../../entities/patient.entity';
 import { Staff } from '../../entities/staff.entity';
 import { DoctorSchedule } from '../../entities/doctor-schedule.entity';
 import {
-  AppointmentStatus, AppointmentType,
+  AppointmentStatus, AppointmentType, UserRole,
 } from '../../entities/enums';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentStatusDto } from './dto/update-status.dto';
@@ -37,7 +37,7 @@ export class AppointmentsService {
     private dataSource: DataSource,
   ) {}
 
-  async findAll(query: QueryAppointmentDto) {
+  async findAll(query: QueryAppointmentDto, user: any) {
     const page = query.page || 1;
     const limit = query.limit || 25;
     const skip = (page - 1) * limit;
@@ -47,6 +47,14 @@ export class AppointmentsService {
       .leftJoinAndSelect('apt.doctor', 'doctor')
       .leftJoinAndSelect('apt.schedule', 'schedule')
       .leftJoinAndSelect('apt.vitals', 'vitals');
+
+    // Ownership scoping
+    if (user.role === UserRole.DOCTOR) {
+      qb.andWhere('apt.doctorId = :staffId', { staffId: user.staffId });
+    } else if (user.role === UserRole.PATIENT) {
+      qb.andWhere('apt.patientId = :patientId', { patientId: user.patientId });
+    }
+    // SUPER_ADMIN, ADMIN, RECEPTIONIST, NURSE — see all (no filter)
 
     if (query.date) {
       qb.andWhere('apt.appointmentDate = :date', { date: query.date });
@@ -70,12 +78,22 @@ export class AppointmentsService {
     return { data, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, user?: any) {
     const apt = await this.aptRepo.findOne({
       where: { id },
       relations: ['patient', 'doctor', 'doctor.department', 'schedule', 'vitals', 'prescription'],
     });
     if (!apt) throw new NotFoundException(`Appointment ${id} not found`);
+
+    if (user) {
+      if (user.role === UserRole.DOCTOR && apt.doctorId !== user.staffId) {
+        throw new ForbiddenException('You can only view your own appointments');
+      }
+      if (user.role === UserRole.PATIENT && apt.patientId !== user.patientId) {
+        throw new ForbiddenException('You can only view your own appointments');
+      }
+    }
+
     return apt;
   }
 
@@ -143,8 +161,12 @@ export class AppointmentsService {
     }
   }
 
-  async updateStatus(id: string, dto: UpdateAppointmentStatusDto) {
-    const apt = await this.findOne(id);
+  async updateStatus(id: string, dto: UpdateAppointmentStatusDto, user: any) {
+    const apt = await this.findOne(id, user);
+
+    if (user.role === UserRole.DOCTOR && apt.doctorId !== user.staffId) {
+      throw new ForbiddenException('You can only update your own appointments');
+    }
 
     const allowed = VALID_TRANSITIONS[apt.status];
     if (!allowed || !allowed.includes(dto.status)) {
@@ -184,10 +206,10 @@ export class AppointmentsService {
   /**
    * Today's queue grouped by status with wait times
    */
-  async getTodayQueue() {
+  async getTodayQueue(user: any) {
     const today = new Date().toISOString().split('T')[0];
 
-    const appointments = await this.aptRepo
+    let appointments = await this.aptRepo
       .createQueryBuilder('apt')
       .leftJoinAndSelect('apt.patient', 'patient')
       .leftJoinAndSelect('apt.doctor', 'doctor')
@@ -198,6 +220,10 @@ export class AppointmentsService {
       })
       .orderBy('apt.timeSlot', 'ASC')
       .getMany();
+
+    if (user.role === UserRole.DOCTOR) {
+      appointments = appointments.filter(apt => apt.doctorId === user.staffId);
+    }
 
     const now = new Date();
     const grouped: Record<string, any[]> = {

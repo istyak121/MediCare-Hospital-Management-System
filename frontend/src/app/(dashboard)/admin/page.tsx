@@ -16,10 +16,17 @@ export default function AdminDashboard() {
   const t = useTranslations('dashboard');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary">{t('quick_actions')}</h1>
-        <p className="text-sm text-text-muted">Admin Dashboard</p>
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+            <LayoutDashboard className="w-6 h-6 text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-text-primary">Admin Dashboard</h1>
+            <p className="text-sm text-text-muted">Hospital overview & quick actions</p>
+          </div>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -27,7 +34,7 @@ export default function AdminDashboard() {
         {statsCards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.label} className="bg-white rounded-xl border border-border shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div key={card.label} className="bg-white rounded-xl border border-border shadow-sm p-6 hover:shadow-md hover:-translate-y-0.5 transition-all">
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-xl ${card.bg} flex items-center justify-center`}>
                   <Icon className={`w-6 h-6 ${card.color}`} />
@@ -44,16 +51,22 @@ export default function AdminDashboard() {
 
       {/* Placeholder for charts & tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg border border-border shadow-sm p-6">
+        <div className="bg-white rounded-xl border border-border shadow-sm p-6">
           <h3 className="text-lg font-semibold text-text-primary mb-4">Revenue Trend</h3>
-          <div className="h-64 flex items-center justify-center text-text-muted text-sm">
-            Charts will render here (Recharts)
+          <div className="h-64 flex flex-col items-center justify-center text-text-muted text-sm gap-2">
+            <div className="w-12 h-12 rounded-full bg-bg-tertiary flex items-center justify-center">
+              <Banknote className="w-6 h-6 text-text-muted" />
+            </div>
+            <p>Revenue charts will render here (Recharts)</p>
           </div>
         </div>
-        <div className="bg-white rounded-lg border border-border shadow-sm p-6">
+        <div className="bg-white rounded-xl border border-border shadow-sm p-6">
           <h3 className="text-lg font-semibold text-text-primary mb-4">Recent Activity</h3>
-          <div className="h-64 flex items-center justify-center text-text-muted text-sm">
-            Activity feed will render here
+          <div className="h-64 flex flex-col items-center justify-center text-text-muted text-sm gap-2">
+            <div className="w-12 h-12 rounded-full bg-bg-tertiary flex items-center justify-center">
+              <LayoutDashboard className="w-6 h-6 text-text-muted" />
+            </div>
+            <p>Activity feed will render here</p>
           </div>
         </div>
       </div>

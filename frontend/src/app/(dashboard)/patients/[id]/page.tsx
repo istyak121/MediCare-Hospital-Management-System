@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { usePatient, usePatientRelations, usePatientHistory } from '@/hooks/usePatients';
 import { cn, formatDate, formatCurrency } from '@/lib/utils';
 import { ChevronLeft, User, Heart, Calendar, BedDouble, FileText, FlaskConical, Receipt } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const tabs = [
   { key: 'profile', label: 'Profile', icon: User },
@@ -30,7 +31,27 @@ export default function PatientDetailPage() {
   const { data: labTests } = usePatientRelations(id, 'lab-tests');
   const { data: invoices } = usePatientRelations(id, 'invoices');
 
-  if (isLoading) return <div className="text-center py-12 text-text-muted">Loading patient...</div>;
+  if (isLoading) return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <Skeleton className="w-10 h-10 rounded-md" />
+        <Skeleton className="w-16 h-16 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-48" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+        {[0, 1, 2, 3, 4].map(i => <Skeleton key={i} className="h-20" />)}
+      </div>
+      <Skeleton className="h-10 w-full max-w-md" />
+      <div className="bg-white rounded-lg border border-border shadow-sm p-6">
+        <div className="grid grid-cols-2 gap-4">
+          {[0, 1, 2, 3, 4, 5].map(i => <Skeleton key={i} className="h-12" />)}
+        </div>
+      </div>
+    </div>
+  );
   if (!patient) return <div className="text-center py-12 text-text-muted">Patient not found</div>;
 
   const age = Math.floor((Date.now() - new Date(patient.dateOfBirth).getTime()) / 31557600000);

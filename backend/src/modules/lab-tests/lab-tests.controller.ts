@@ -16,8 +16,8 @@ export class LabTestsController {
   constructor(private readonly service: LabTestsService) {}
 
   @Get() @ApiOperation({ summary: 'List lab tests' })
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.LAB_TECHNICIAN)
-  findAll(@Query('status') status?: string) { return this.service.findAll(status); }
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.LAB_TECHNICIAN, UserRole.PATIENT)
+  findAll(@Query('status') status?: string, @CurrentUser() user?: any) { return this.service.findAll(status, user); }
 
   @Get('test-types') @ApiOperation({ summary: 'List lab test types' })
   getTestTypes() { return this.service.getTestTypes(); }
@@ -26,8 +26,10 @@ export class LabTestsController {
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR)
   create(@Body() dto: CreateLabTestDto, @CurrentUser('id') uid: string) { return this.service.create(dto, uid); }
 
-  @Get(':id') @ApiOperation({ summary: 'Get lab test details' })
-  findOne(@Param('id') id: string) { return this.service.findOne(id); }
+  @Get(':id')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.LAB_TECHNICIAN, UserRole.PATIENT)
+  @ApiOperation({ summary: 'Get lab test details' })
+  findOne(@Param('id') id: string, @CurrentUser() user?: any) { return this.service.findOne(id, user); }
 
   @Put(':id/collect') @ApiOperation({ summary: 'Mark sample as collected' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.LAB_TECHNICIAN)

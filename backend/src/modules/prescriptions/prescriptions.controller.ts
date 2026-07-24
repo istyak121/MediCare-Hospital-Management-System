@@ -16,8 +16,8 @@ export class PrescriptionsController {
   constructor(private readonly rxService: PrescriptionsService) {}
 
   @Get() @ApiOperation({ summary: 'List prescriptions' })
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.NURSE)
-  findAll(@Query() q: any) { return this.rxService.findAll(q); }
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.NURSE, UserRole.PATIENT)
+  findAll(@Query() q: any, @CurrentUser() user: any) { return this.rxService.findAll(q, user); }
 
   @Get('search-medicines') @ApiOperation({ summary: 'Search medicines for prescribing' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR)
@@ -31,5 +31,5 @@ export class PrescriptionsController {
 
   @Get(':id') @ApiOperation({ summary: 'Get prescription details' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.NURSE, UserRole.PATIENT)
-  findOne(@Param('id') id: string) { return this.rxService.findOne(id); }
+  findOne(@Param('id') id: string, @CurrentUser() user: any) { return this.rxService.findOne(id, user); }
 }

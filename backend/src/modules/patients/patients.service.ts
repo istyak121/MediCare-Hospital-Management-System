@@ -1,7 +1,9 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, ILike, Between, FindManyOptions } from 'typeorm';
 import { Patient } from '../../entities/patient.entity';
+import { Appointment } from '../../entities/appointment.entity';
+import { UserRole } from '../../entities/enums';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { QueryPatientDto } from './dto/query-patient.dto';
@@ -12,15 +14,24 @@ export class PatientsService {
   constructor(
     @InjectRepository(Patient)
     private patientRepo: Repository<Patient>,
+    @InjectRepository(Appointment)
+    private aptRepo: Repository<Appointment>,
     private dataSource: DataSource,
   ) {}
 
-  async findAll(query: QueryPatientDto) {
+  async findAll(query: QueryPatientDto, user: any) {
     const page = query.page || 1;
     const limit = query.limit || 25;
     const skip = (page - 1) * limit;
 
     const qb = this.patientRepo.createQueryBuilder('patient');
+
+    // Ownership scoping
+    if (user.role === UserRole.DOCTOR) {
+      // Only return patients this doctor has appointments with
+      qb.innerJoinAndSelect('patient.appointments', 'scopedApt',
+        'scopedApt.doctorId = :staffId', { staffId: user.staffId });
+    }
 
     if (query.search) {
       qb.andWhere(
@@ -53,12 +64,20 @@ export class PatientsService {
     return { data, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, user: any) {
     const patient = await this.patientRepo.findOne({
       where: { id },
       relations: ['user', 'appointments', 'appointments.doctor', 'admissions', 'prescriptions', 'labTests', 'invoices'],
     });
     if (!patient) throw new NotFoundException(`Patient ${id} not found`);
+    if (user.role === UserRole.DOCTOR) {
+      const hasRelationship = await this.aptRepo.findOne({
+        where: { patientId: id, doctorId: user.staffId },
+      });
+      if (!hasRelationship) {
+        throw new ForbiddenException('You can only access your own patients');
+      }
+    }
     return patient;
   }
 
@@ -85,26 +104,34 @@ export class PatientsService {
     return this.patientRepo.save(patient);
   }
 
-  async update(id: string, dto: UpdatePatientDto) {
-    const patient = await this.findOne(id);
+  async update(id: string, dto: UpdatePatientDto, user: any) {
+    const patient = await this.findOne(id, user);
     Object.assign(patient, dto);
     if (dto.dateOfBirth) patient.dateOfBirth = new Date(dto.dateOfBirth);
     return this.patientRepo.save(patient);
   }
 
-  async remove(id: string) {
-    const patient = await this.findOne(id);
+  async remove(id: string, user: any) {
+    const patient = await this.findOne(id, user);
     await this.patientRepo.softRemove(patient);
     return { message: 'Patient archived successfully' };
   }
 
   // Aggregated history endpoint
-  async getHistory(id: string) {
+  async getHistory(id: string, user: any) {
     const patient = await this.patientRepo.findOne({
       where: { id },
       relations: ['appointments', 'appointments.doctor', 'prescriptions', 'prescriptions.doctor', 'labTests', 'labTests.testType', 'admissions', 'admissions.doctor', 'invoices'],
     });
     if (!patient) throw new NotFoundException(`Patient ${id} not found`);
+    if (user.role === UserRole.DOCTOR) {
+      const hasRelationship = await this.aptRepo.findOne({
+        where: { patientId: id, doctorId: user.staffId },
+      });
+      if (!hasRelationship) {
+        throw new ForbiddenException('You can only access your own patients');
+      }
+    }
     return {
       patient,
       summary: {
@@ -117,39 +144,71 @@ export class PatientsService {
     };
   }
 
-  async getAppointments(id: string) {
+  async getAppointments(id: string, user: any) {
     const patient = await this.patientRepo.findOne({
       where: { id },
       relations: ['appointments', 'appointments.doctor', 'appointments.vitals'],
     });
     if (!patient) throw new NotFoundException(`Patient ${id} not found`);
+    if (user.role === UserRole.DOCTOR) {
+      const hasRelationship = await this.aptRepo.findOne({
+        where: { patientId: id, doctorId: user.staffId },
+      });
+      if (!hasRelationship) {
+        throw new ForbiddenException('You can only access your own patients');
+      }
+    }
     return patient.appointments || [];
   }
 
-  async getAdmissions(id: string) {
+  async getAdmissions(id: string, user: any) {
     const patient = await this.patientRepo.findOne({
       where: { id },
       relations: ['admissions', 'admissions.doctor', 'admissions.bed', 'admissions.bed.ward'],
     });
     if (!patient) throw new NotFoundException(`Patient ${id} not found`);
+    if (user.role === UserRole.DOCTOR) {
+      const hasRelationship = await this.aptRepo.findOne({
+        where: { patientId: id, doctorId: user.staffId },
+      });
+      if (!hasRelationship) {
+        throw new ForbiddenException('You can only access your own patients');
+      }
+    }
     return patient.admissions || [];
   }
 
-  async getPrescriptions(id: string) {
+  async getPrescriptions(id: string, user: any) {
     const patient = await this.patientRepo.findOne({
       where: { id },
       relations: ['prescriptions', 'prescriptions.doctor', 'prescriptions.medicines', 'prescriptions.medicines.medicine'],
     });
     if (!patient) throw new NotFoundException(`Patient ${id} not found`);
+    if (user.role === UserRole.DOCTOR) {
+      const hasRelationship = await this.aptRepo.findOne({
+        where: { patientId: id, doctorId: user.staffId },
+      });
+      if (!hasRelationship) {
+        throw new ForbiddenException('You can only access your own patients');
+      }
+    }
     return patient.prescriptions || [];
   }
 
-  async getLabTests(id: string) {
+  async getLabTests(id: string, user: any) {
     const patient = await this.patientRepo.findOne({
       where: { id },
       relations: ['labTests', 'labTests.testType'],
     });
     if (!patient) throw new NotFoundException(`Patient ${id} not found`);
+    if (user.role === UserRole.DOCTOR) {
+      const hasRelationship = await this.aptRepo.findOne({
+        where: { patientId: id, doctorId: user.staffId },
+      });
+      if (!hasRelationship) {
+        throw new ForbiddenException('You can only access your own patients');
+      }
+    }
     return patient.labTests || [];
   }
 

@@ -91,7 +91,7 @@ async function seed() {
   for (let di = 0; di < docData.length; di++) {
     const doc = docData[di];
     const user = new User();
-    user.email = doc.fullName.toLowerCase().replace(/[^a-z]/g, '.') + '@medicare.com';
+    user.email = doc.fullName.toLowerCase().replace(/[^a-z]/g, '.').replace(/\.+/g, '.') + '@medicare.com';
     user.password = await bcrypt.hash('Doctor@123', 12);
     user.role = UserRole.DOCTOR;
     user.isActive = true;

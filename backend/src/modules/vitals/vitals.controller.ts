@@ -28,8 +28,8 @@ export class VitalsController {
   @Get('appointments/:id/vitals')
   @ApiOperation({ summary: 'Get vitals for an appointment' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.NURSE)
-  findByAppointment(@Param('id') appointmentId: string) {
-    return this.vitalsService.findByAppointment(appointmentId);
+  findByAppointment(@Param('id') appointmentId: string, @CurrentUser() user?: any) {
+    return this.vitalsService.findByAppointment(appointmentId, user);
   }
 
   @Put('vitals/:id')

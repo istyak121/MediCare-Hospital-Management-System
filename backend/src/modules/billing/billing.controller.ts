@@ -15,9 +15,9 @@ export class BillingController {
   constructor(private readonly service: BillingService) {}
 
   @Get('invoices') @ApiOperation({ summary: 'List invoices' })
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.ACCOUNTANT)
-  findAll(@Query('status') status?: string, @Query('type') type?: string, @Query('page') page?: number) {
-    return this.service.findAll(status, type, page || 1);
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.ACCOUNTANT, UserRole.PATIENT)
+  findAll(@Query('status') status?: string, @Query('type') type?: string, @Query('page') page?: number, @CurrentUser() user?: any) {
+    return this.service.findAll(status, type, page || 1, 25, user);
   }
 
   @Post('invoices') @ApiOperation({ summary: 'Create invoice' })
@@ -26,7 +26,7 @@ export class BillingController {
 
   @Get('invoices/:id') @ApiOperation({ summary: 'Get invoice details' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.ACCOUNTANT, UserRole.PATIENT)
-  findOne(@Param('id') id: string) { return this.service.findOne(id); }
+  findOne(@Param('id') id: string, @CurrentUser() user?: any) { return this.service.findOne(id, user); }
 
   @Post('invoices/:id/payments') @ApiOperation({ summary: 'Add payment to invoice' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.ACCOUNTANT)

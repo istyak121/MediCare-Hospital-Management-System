@@ -23,7 +23,9 @@ export class PharmacyController {
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.PHARMACIST)
   getLowStock() { return this.service.getLowStock(); }
 
-  @Get('medicines/:id') @ApiOperation({ summary: 'Get medicine details' })
+  @Get('medicines/:id')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.PHARMACIST)
+  @ApiOperation({ summary: 'Get medicine details' })
   findOne(@Param('id') id: string) { return this.service.findOne(id); }
 
   @Post('medicines') @ApiOperation({ summary: 'Add medicine' })

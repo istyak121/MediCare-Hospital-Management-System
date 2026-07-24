@@ -4,6 +4,7 @@ import { SchedulesService } from './schedules.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserRole } from '../../entities/enums';
 
 @ApiTags('Schedules')
@@ -15,15 +16,15 @@ export class SchedulesController {
 
   @Get('doctor/:doctorId')
   @ApiOperation({ summary: 'Get weekly schedule for a doctor' })
-  findByDoctor(@Param('doctorId') doctorId: string) {
-    return this.schedulesService.findByDoctor(doctorId);
+  findByDoctor(@Param('doctorId') doctorId: string, @CurrentUser() user?: any) {
+    return this.schedulesService.findByDoctor(doctorId, user);
   }
 
   @Put('doctor/:doctorId')
   @ApiOperation({ summary: 'Set weekly schedule for a doctor' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR)
-  upsert(@Param('doctorId') doctorId: string, @Body() body: { schedules: any[] }) {
-    return this.schedulesService.upsert(doctorId, body.schedules);
+  upsert(@Param('doctorId') doctorId: string, @Body() body: { schedules: any[] }, @CurrentUser() user?: any) {
+    return this.schedulesService.upsert(doctorId, body.schedules, user);
   }
 
   @Get('available')

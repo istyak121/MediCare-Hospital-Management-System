@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { apiFetch } from '@/lib/api';
+import { useAuthStore } from '@/stores/authStore';
 import { ScheduleCalendar } from '@/components/schedule/ScheduleCalendar';
-import { Stethoscope, Calendar } from 'lucide-react';
+import { Stethoscope, Calendar, Lock } from 'lucide-react';
 
 export default function SchedulesPage() {
+  const { user } = useAuthStore();
+  const isDoctor = user?.role === 'doctor';
   const [selectedDoctor, setSelectedDoctor] = useState('');
 
   const { data: doctorsData } = useQuery({
@@ -14,7 +17,25 @@ export default function SchedulesPage() {
     queryFn: () => apiFetch('/staff/doctors'),
   });
 
+  // Fetch current user profile which includes staff/patient relations
+  const { data: profileData } = useQuery({
+    queryKey: ['my-profile'],
+    queryFn: () => apiFetch('/auth/me'),
+  });
+
   const doctors = Array.isArray(doctorsData) ? doctorsData : (doctorsData as any)?.data || [];
+  const profile = (profileData as any)?.data || profileData || {};
+  const myStaffId = profile?.staff?.id;
+
+  // For doctors: auto-find their staff record from the /auth/me response
+  const currentDoctor = isDoctor ? profile?.staff : null;
+
+  // Auto-select the doctor's own schedule once profile loads
+  useEffect(() => {
+    if (isDoctor && myStaffId && !selectedDoctor) {
+      setSelectedDoctor(myStaffId);
+    }
+  }, [isDoctor, myStaffId, selectedDoctor]);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -35,18 +56,28 @@ export default function SchedulesPage() {
         <label className="block text-sm font-medium text-text-secondary mb-2 flex items-center gap-2">
           <Stethoscope className="w-4 h-4" /> Select Doctor
         </label>
-        <select
-          value={selectedDoctor}
-          onChange={e => setSelectedDoctor(e.target.value)}
-          className="w-full max-w-md h-10 px-3 rounded-md border border-border bg-white text-sm focus:ring-2 focus:ring-primary-500"
-        >
-          <option value="">Choose a doctor...</option>
-          {doctors.map((doc: any) => (
-            <option key={doc.id} value={doc.id}>
-              {doc.fullName} — {doc.specialization} ({doc.department?.name || 'N/A'})
-            </option>
-          ))}
-        </select>
+        {isDoctor ? (
+          <div className="flex items-center gap-2 p-3 rounded-md bg-primary-50 border border-primary-200">
+            <Lock className="w-4 h-4 text-primary-600" />
+            <span className="text-sm text-primary-700 font-medium">
+              {currentDoctor?.fullName || 'You'} — {currentDoctor?.specialization || ''}
+            </span>
+            <span className="text-xs text-primary-500 ml-auto">You can only edit your own schedule</span>
+          </div>
+        ) : (
+          <select
+            value={selectedDoctor}
+            onChange={e => setSelectedDoctor(e.target.value)}
+            className="w-full max-w-md h-10 px-3 rounded-md border border-border bg-white text-sm focus:ring-2 focus:ring-primary-500"
+          >
+            <option value="">Choose a doctor...</option>
+            {doctors.map((doc: any) => (
+              <option key={doc.id} value={doc.id}>
+                {doc.fullName} — {doc.specialization} ({doc.department?.name || 'N/A'})
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       {/* Calendar */}

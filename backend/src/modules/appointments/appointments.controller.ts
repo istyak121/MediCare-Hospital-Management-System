@@ -19,16 +19,16 @@ export class AppointmentsController {
 
   @Get()
   @ApiOperation({ summary: 'List appointments with filters' })
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  findAll(@Query() query: QueryAppointmentDto) {
-    return this.appointmentsService.findAll(query);
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE, UserRole.PATIENT)
+  findAll(@Query() query: QueryAppointmentDto, @CurrentUser() user: any) {
+    return this.appointmentsService.findAll(query, user);
   }
 
   @Get('today-queue')
   @ApiOperation({ summary: "Get today's queue grouped by status" })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  getTodayQueue() {
-    return this.appointmentsService.getTodayQueue();
+  getTodayQueue(@CurrentUser() user: any) {
+    return this.appointmentsService.getTodayQueue(user);
   }
 
   @Get('doctor/:doctorId/schedule')
@@ -47,16 +47,16 @@ export class AppointmentsController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get appointment details' })
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  findOne(@Param('id') id: string) {
-    return this.appointmentsService.findOne(id);
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE, UserRole.PATIENT)
+  findOne(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.appointmentsService.findOne(id, user);
   }
 
   @Put(':id/status')
   @ApiOperation({ summary: 'Update appointment status (check-in, start, complete, cancel)' })
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.RECEPTIONIST, UserRole.DOCTOR, UserRole.NURSE)
-  updateStatus(@Param('id') id: string, @Body() dto: UpdateAppointmentStatusDto) {
-    return this.appointmentsService.updateStatus(id, dto);
+  updateStatus(@Param('id') id: string, @Body() dto: UpdateAppointmentStatusDto, @CurrentUser() user: any) {
+    return this.appointmentsService.updateStatus(id, dto, user);
   }
 
   @Put(':id')

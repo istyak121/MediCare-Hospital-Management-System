@@ -3,11 +3,10 @@
 import { useTranslations } from 'next-intl';
 import { useAuthStore } from '@/stores/authStore';
 import { useSidebarStore } from '@/stores/sidebarStore';
-import { useThemeStore } from '@/stores/themeStore';
 import { authApi } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import {
-  Menu, Bell, Sun, Moon, LogOut, User, Globe,
+  Menu, Bell, LogOut, User, Globe,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -15,7 +14,6 @@ export function Header() {
   const t = useTranslations('common');
   const { user, logout: clearAuth } = useAuthStore();
   const { toggleCollapsed, toggleMobile } = useSidebarStore();
-  const { isDark, toggleDark } = useThemeStore();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -61,15 +59,6 @@ export function Header() {
             title={t('language')}
           >
             <Globe className="w-5 h-5" />
-          </button>
-
-          {/* Dark mode */}
-          <button
-            onClick={toggleDark}
-            className="p-2 rounded-md hover:bg-bg-tertiary text-text-secondary"
-            title={t('dark_mode')}
-          >
-            {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
 
           {/* Notifications */}

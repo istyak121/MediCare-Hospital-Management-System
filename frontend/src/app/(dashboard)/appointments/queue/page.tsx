@@ -64,7 +64,7 @@ export default function QueuePage() {
                 <span className="w-6 h-6 rounded-full bg-bg-tertiary text-xs flex items-center justify-center font-medium">{items.length}</span>
               </div>
               <div className="p-3 space-y-2 max-h-[calc(100vh-280px)] overflow-y-auto">
-                {items.length === 0 && <p className="text-xs text-text-muted text-center py-4">No patients</p>}
+                {items.length === 0 && <EmptyState icon={<Clock className="w-6 h-6 text-text-muted" />} title="No patients" className="py-4" />}
                 {items.map((card: any) => (
                   <div key={card.id} className={cn('bg-white rounded-md border border-border p-3 cursor-pointer hover:shadow-md transition-shadow', cfg?.color || '')}>
                     <p className="text-lg font-bold text-text-primary">{card.appointmentNo?.replace('APT-', '')}</p>
@@ -80,4 +80,15 @@ export default function QueuePage() {
                       {col === 'checked_in' && <button onClick={() => handleStatus(card.id, 'in_progress')} className="flex-1 h-7 text-xs rounded bg-purple-50 text-purple-700 font-medium hover:bg-purple-100">Start Visit</button>}
                       {col === 'in_progress' && <button onClick={() => handleStatus(card.id, 'completed')} className="flex-1 h-7 text-xs rounded bg-emerald-50 text-emerald-700 font-medium hover:bg-emerald-100">Complete</button>}
                       {(col === 'checked_in' || col === 'scheduled') && <button onClick={() => handleStatus(card.id, 'cancelled')} className="h-7 px-2 text-xs rounded bg-red-50 text-red-700 font-medium hover:bg-red-100">Cancel</button>}
-                      {(col === 'checked_in' ||
+                      {(col === 'checked_in' || col === 'scheduled') && <button onClick={() => handleStatus(card.id, 'no_show')} className="h-7 px-2 text-xs rounded bg-slate-50 text-slate-700 font-medium hover:bg-slate-100">No Show</button>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

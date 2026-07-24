@@ -1,11 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Admission } from '../../entities/admission.entity';
 import { Bed } from '../../entities/bed.entity';
 import { ProgressNote } from '../../entities/progress-note.entity';
-import { AdmissionStatus, AdmissionType } from '../../entities/enums';
-import { BedStatus } from '../../entities/enums';
+import { AdmissionStatus, AdmissionType, UserRole, BedStatus } from '../../entities/enums';
 
 @Injectable()
 export class AdmissionsService {
@@ -15,20 +14,29 @@ export class AdmissionsService {
     @InjectRepository(ProgressNote) private noteRepo: Repository<ProgressNote>,
   ) {}
 
-  async findAll(status?: string) {
+  async findAll(status?: string, user?: any) {
     const qb = this.admRepo.createQueryBuilder('adm')
       .leftJoinAndSelect('adm.patient', 'patient')
       .leftJoinAndSelect('adm.doctor', 'doctor')
       .leftJoinAndSelect('adm.bed', 'bed')
       .leftJoinAndSelect('bed.ward', 'ward')
       .orderBy('adm.admissionDate', 'DESC');
+
+    if (user?.role === UserRole.DOCTOR) {
+      qb.andWhere('adm.doctorId = :staffId', { staffId: user.staffId });
+    }
+    // NURSE, RECEPTIONIST, ADMIN — see all
+
     if (status) qb.andWhere('adm.status = :s', { s: status });
     return qb.getMany();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, user?: any) {
     const adm = await this.admRepo.findOne({ where: { id }, relations: ['patient', 'doctor', 'bed', 'bed.ward', 'progressNotes', 'invoices'] });
     if (!adm) throw new NotFoundException('Admission not found');
+    if (user?.role === UserRole.DOCTOR && adm.doctorId !== user.staffId) {
+      throw new ForbiddenException('You can only view your own admissions');
+    }
     return adm;
   }
 
@@ -49,8 +57,8 @@ export class AdmissionsService {
     return this.findOne(saved.id);
   }
 
-  async discharge(id: string, dto: { dischargeDate?: string; finalDiagnosis?: string }) {
-    const adm = await this.findOne(id);
+  async discharge(id: string, dto: { dischargeDate?: string; finalDiagnosis?: string }, user?: any) {
+    const adm = await this.findOne(id, user);
     adm.status = AdmissionStatus.DISCHARGED;
     adm.dischargeDate = dto.dischargeDate ? new Date(dto.dischargeDate) : new Date();
     if (dto.finalDiagnosis) adm.diagnosis = dto.finalDiagnosis;
@@ -72,7 +80,11 @@ export class AdmissionsService {
     return this.admRepo.save(adm);
   }
 
-  async addProgressNote(admissionId: string, doctorId: string, note: string) {
+  async addProgressNote(admissionId: string, doctorId: string, note: string, user?: any) {
+    // Verify ownership: doctor can only add notes to their own admissions
+    if (user?.role === UserRole.DOCTOR) {
+      const adm = await this.findOne(admissionId, user);
+    }
     const pn = this.noteRepo.create({ admissionId, doctorId, note });
     return this.noteRepo.save(pn);
   }

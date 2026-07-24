@@ -1,26 +1,39 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LabTest } from '../../entities/lab-test.entity';
-import { LabTestStatus } from '../../entities/enums';
+import { LabTestStatus, UserRole } from '../../entities/enums';
 import { CreateLabTestDto, CompleteLabTestDto } from './dto/create-lab-test.dto';
 
 @Injectable()
 export class LabTestsService {
   constructor(@InjectRepository(LabTest) private repo: Repository<LabTest>) {}
 
-  async findAll(status?: string) {
+  async findAll(status?: string, user?: any) {
     const qb = this.repo.createQueryBuilder('lt')
       .leftJoinAndSelect('lt.patient', 'patient')
       .leftJoinAndSelect('lt.testType', 'testType')
       .orderBy('lt.createdAt', 'DESC');
+
+    if (user?.role === UserRole.DOCTOR) {
+      qb.andWhere('lt.requestedById = :userId', { userId: user.id });
+    } else if (user?.role === UserRole.PATIENT) {
+      qb.andWhere('lt.patientId = :patientId', { patientId: user.patientId });
+    }
+
     if (status) qb.andWhere('lt.status = :s', { s: status });
     return qb.getMany();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, user?: any) {
     const lt = await this.repo.findOne({ where: { id }, relations: ['patient', 'testType'] });
     if (!lt) throw new NotFoundException('Lab test not found');
+    if (user?.role === UserRole.DOCTOR && lt.requestedById !== user.id) {
+      throw new ForbiddenException('You can only view lab tests you requested');
+    }
+    if (user?.role === UserRole.PATIENT && lt.patientId !== user.patientId) {
+      throw new ForbiddenException('You can only view your own lab tests');
+    }
     return lt;
   }
 

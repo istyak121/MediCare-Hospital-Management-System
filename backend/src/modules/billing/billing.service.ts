@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import { Invoice } from '../../entities/invoice.entity';
 import { InvoiceItem } from '../../entities/invoice-item.entity';
-import { InvoiceStatus, InvoiceType } from '../../entities/enums';
+import { InvoiceStatus, InvoiceType, UserRole } from '../../entities/enums';
 import { ItemType } from '../../entities/enums';
 import { PaymentMethod } from '../../entities/enums';
 import { Payment } from '../../entities/payment.entity';
@@ -16,21 +16,28 @@ export class BillingService {
     @InjectRepository(Payment) private payRepo: Repository<Payment>,
   ) {}
 
-  async findAll(status?: string, type?: string, page = 1, limit = 25) {
+  async findAll(status?: string, type?: string, page = 1, limit = 25, user?: any) {
     const qb = this.invRepo.createQueryBuilder('inv')
       .leftJoinAndSelect('inv.patient', 'patient')
       .leftJoinAndSelect('inv.items', 'items')
       .leftJoinAndSelect('inv.payments', 'payments')
       .orderBy('inv.createdAt', 'DESC');
+
+    if (user?.role === UserRole.PATIENT) {
+      qb.andWhere('inv.patientId = :patientId', { patientId: user.patientId });
+    }
     if (status) qb.andWhere('inv.status = :s', { s: status });
     if (type) qb.andWhere('inv.invoiceType = :t', { t: type });
     const [data, total] = await qb.getManyAndCount();
     return { data, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, user?: any) {
     const inv = await this.invRepo.findOne({ where: { id }, relations: ['patient', 'items', 'items.medicine', 'payments', 'admission'] });
     if (!inv) throw new NotFoundException('Invoice not found');
+    if (user?.role === UserRole.PATIENT && inv.patientId !== user.patientId) {
+      throw new ForbiddenException('You can only view your own invoices');
+    }
     return inv;
   }
 

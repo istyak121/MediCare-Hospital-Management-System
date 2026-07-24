@@ -4,6 +4,8 @@ import { apiFetch } from '@/lib/api';
 import { useAuthStore } from '@/stores/authStore';
 import { formatDate } from '@/lib/utils';
 import { Calendar, Clock } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export default function PortalAppointments() {
   const { user } = useAuthStore();
@@ -16,10 +18,13 @@ export default function PortalAppointments() {
   return (
     <div className="space-y-4 animate-fade-in">
       <h1 className="text-xl font-bold text-text-primary">My Appointments</h1>
-      {isLoading ? <p className="text-text-muted">Loading...</p> : apts.length === 0 ? (
-        <div className="bg-white rounded-lg border border-border p-8 text-center">
-          <Calendar className="w-12 h-12 mx-auto text-text-muted mb-3" />
-          <p className="text-text-muted">No appointments yet</p>
+      {isLoading ? (
+        <div className="space-y-3">
+          {[0, 1, 2].map(i => <Skeleton key={i} className="h-20 w-full" />)}
+        </div>
+      ) : apts.length === 0 ? (
+        <div className="bg-white rounded-lg border border-border">
+          <EmptyState icon={<Calendar className="w-8 h-8 text-text-muted" />} title="No appointments yet" description="Your upcoming appointments will appear here." />
         </div>
       ) : (
         <div className="space-y-3">
