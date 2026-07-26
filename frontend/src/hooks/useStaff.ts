@@ -18,7 +18,17 @@ export interface StaffMember {
   consultationFee?: number;
   departmentId?: string;
   department?: { id: string; name: string; };
-  user?: { id: string; email: string; };
+  user?: { 
+    id: string; 
+    email: string;
+    fullName: string;
+    fullNameBn?: string;
+    phone: string;
+    address?: string;
+    gender: string;
+    dateOfBirth?: string;
+    isActive: boolean;
+  };
   schedules?: { id: string; dayOfWeek: string; startTime: string; endTime: string; isAvailable: boolean; }[];
   createdAt: string;
 }
