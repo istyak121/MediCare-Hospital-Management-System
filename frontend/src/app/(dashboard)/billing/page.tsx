@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useInvoices } from '@/hooks/useBilling';
-import { Plus, Search, Filter, Download, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Search, Filter, Download, ChevronLeft, ChevronRight, Receipt } from 'lucide-react';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { TableSkeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const statusColors = {
   PENDING: 'bg-amber-50 text-amber-700 border-amber-200',
@@ -100,16 +102,16 @@ export default function BillingPage() {
             </thead>
             <tbody>
               {isLoading ? (
-                <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-text-muted">
-                    <div className="flex justify-center gap-2">
-                      <div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
-                    </div>
-                  </td>
-                </tr>
+                <TableSkeleton cols={9} rows={5} />
               ) : !data?.data?.length ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-text-muted">No invoices found</td>
+                  <td colSpan={9}>
+                    <EmptyState
+                      icon={<Receipt className="w-8 h-8 text-text-muted" />}
+                      title="No invoices found"
+                      description="Try adjusting your search or create a new invoice."
+                    />
+                  </td>
                 </tr>
               ) : (
                 data.data.map((inv: any) => (
