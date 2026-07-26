@@ -35,6 +35,10 @@ export interface StaffMember {
 
 export interface StaffListResponse {
   data: StaffMember[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export function useStaff(params: { departmentId?: string; search?: string }) {

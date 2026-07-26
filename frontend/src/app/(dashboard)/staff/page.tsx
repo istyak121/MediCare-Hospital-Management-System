@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useStaff } from '@/hooks/useStaff';
+import { useDepartments } from '@/hooks/useDepartments';
 import { UserCog, Plus, Search, ChevronLeft, ChevronRight, Filter, Building2, UserCheck } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 
@@ -15,11 +15,20 @@ export default function StaffPage() {
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useStaff({ search: search || undefined, departmentId: department || undefined });
+  const { data: departments } = useDepartments();
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary">Staff Directory</h1>
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center">
+            <UserCog className="w-6 h-6 text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-text-primary">Staff Directory</h1>
+            <p className="text-sm text-text-muted">Manage hospital staff, doctors, nurses, and administrative personnel</p>
+          </div>
+        </div>
         <button onClick={() => router.push('/staff/new')} className="inline-flex items-center gap-2 h-10 px-4 rounded-md bg-primary-600 text-white text-sm font-medium hover:bg-primary-700">
           <Plus className="w-4 h-4" /> Add Staff
         </button>
@@ -38,11 +47,9 @@ export default function StaffPage() {
         </div>
         <select value={department} onChange={e => { setDepartment(e.target.value); setPage(1); }} className="h-10 px-3 rounded-md border border-border bg-white text-sm">
           <option value="">All Departments</option>
-          <option value="1">Cardiology</option>
-          <option value="2">Neurology</option>
-          <option value="3">Orthopedics</option>
-          <option value="4">Pediatrics</option>
-          <option value="5">Emergency</option>
+          {departments?.map((dept: any) => (
+            <option key={dept.id} value={dept.id}>{dept.name}</option>
+          ))}
         </select>
         <button className="h-10 px-3 rounded-md border border-border bg-white text-text-secondary hover:bg-bg-tertiary">
           <Filter className="w-4 h-4" />
@@ -105,6 +112,31 @@ export default function StaffPage() {
             </tbody>
           </table>
         </div>
+
+        {data && data.totalPages && data.totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-bg-secondary">
+            <span className="text-sm text-text-muted">
+              Showing {((data.page || 1) - 1) * (data.limit || 25) + 1}&ndash;{Math.min((data.page || 1) * (data.limit || 25), data.total || 0)} of {data.total || 0}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPage(page - 1)}
+                disabled={page <= 1}
+                className="h-8 px-3 rounded-md border border-border bg-white text-sm disabled:opacity-50"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="text-sm font-medium px-2">{data.page || 1} / {data.totalPages}</span>
+              <button
+                onClick={() => setPage(page + 1)}
+                disabled={page >= (data.totalPages || 1)}
+                className="h-8 px-3 rounded-md border border-border bg-white text-sm disabled:opacity-50"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
